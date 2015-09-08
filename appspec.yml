@@ -5,7 +5,7 @@ files:
     destination: /opt/wdr/instand-service
 hooks:
   BeforeInstall:
-    - location: instand-ops/codedeploy/scripts/befre_install.sh
+    - location: instand-ops/codedeploy/scripts/before_install.sh
       timeout: 300
       runas: root
   AfterInstall:
