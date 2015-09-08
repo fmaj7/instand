@@ -1,1 +1,83 @@
-/* Empty. Add your own CSS if you like */
+.card .item {
+  padding : 12px;
+}
+
+.card .topic h2 {
+  color: rgb(43, 109, 173);
+  font-weight:bold;
+  display: inline-block;
+  font-size: 1.2em;
+}
+
+.card .answer .actions {
+  vertical-align: middle;
+  border-top: 0;
+  padding-top: 10px;
+}
+
+.card .answer .author {
+  padding-bottom: 10px;
+  vertical-align: middle;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color:rgb(130, 132, 134)
+}
+
+.card .answer .author .name {
+  font-weight:normal;
+  font-size: small;
+  font-style: italic;
+}
+
+.card .answer .author .icon {
+  font-size: 14px;
+}
+
+.card .answer .content {
+  font-family: Georgia, Times, 'Times New Roman', serif;
+}
+
+.card .answer .action.vote {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  -webkit-user-select: none;
+  background-attachment: scroll;
+  background-clip: border-box;
+  background-color: rgb(234, 244, 248);
+  background-image: none;
+  background-origin: padding-box;
+  background-size: auto;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  color: rgb(43, 109, 173);
+  cursor: auto;
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  margin-right: 6px;
+  margin-top: 0px;
+  outline-color: rgb(43, 109, 173);
+  outline-style: none;
+  outline-width: 0px;
+  padding-bottom: 6px;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 6px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  white-space: pre;
+  word-wrap: break-word;
+}
+
+.card .answer .action.share {
+  font-size: 25px;
+  float:right;
+  margin-right: 30px;
+}
+
+.card .answer .action.more {
+  font-size: 25px;
+  float:right;
+}

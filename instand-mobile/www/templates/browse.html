@@ -1,5 +1,27 @@
 <ion-view view-title="Browse">
   <ion-content>
-    <h1>Browse</h1>
+    <div class="list card" ng-repeat="topic in topics">
+      <div class="item topic">
+        <h2>{{ topic.title }}</h2>
+      </div>
+      <div class="answer item item-text-wrap">
+        <div class="author">
+          <div>
+            <span class="icon ion-person"></span>
+            <span class="name">chumhum</span>
+          </div>
+        </div>
+        <div class="content" ng-repeat="answer in topic.answers">
+          <img class="full-image" ng-show="{{ answer.imgurl }}" ng-src="{{ answer.imgurl }}">
+          {{ answer.details }}
+        </div>
+        <div class="actions">
+            <a class="action vote">Upvote | 23</a>
+            <a class="action vote">Dovote | 14</a>
+            <a class="icon ion-more action more"></a>
+            <a class="icon ion-share action share"></a>
+        </div>
+      </div>
+    </div>
   </ion-content>
 </ion-view>
