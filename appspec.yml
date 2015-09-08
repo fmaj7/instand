@@ -1,4 +1,22 @@
+version: 0.0
 os: linux
 files:
- - source: /instand-service
-   destination: /var/instand-service
+  - source: /
+    destination: /opt/wdr/instand-service
+hooks:
+  BeforeInstall:
+    - location: instand-ops/codedeploy/scripts/befre_install.sh
+      timeout: 300
+      runas: root
+  AfterInstall:
+    - location: instand-ops/codedeploy/scripts/after_install.sh
+      timeout: 300
+      runas: root
+  ApplicationStart:
+    - location: instand-ops/codedeploy/scripts/application_start.sh
+      timeout: 300
+      runas: root
+  ApplicationStop:
+    - location: instand-ops/codedeploy/scripts/application_stop.sh
+      timeout: 300
+      runas: root
