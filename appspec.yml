@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /opt/wdr/instand-service
+    destination: /opt/wdr/env/instand
 hooks:
   BeforeInstall:
     - location: instand-ops/codedeploy/scripts/before_install.sh
