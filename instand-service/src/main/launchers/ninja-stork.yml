@@ -1,0 +1,7 @@
+name: "instand-service"
+domain: "com.instand"
+display_name: "instand-service"
+short_description: "Instand Service"
+type: DAEMON
+main_class: "ninja.standalone.NinjaJetty"
+platforms: [LINUX]

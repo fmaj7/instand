@@ -58,11 +58,32 @@
                 </executions>
             </plugin>
             <plugin>
+                <groupId>com.fizzed</groupId>
+                <artifactId>fizzed-stork-maven-plugin</artifactId>
+                <version>1.2.2</version>
+                <executions>
+                    <execution>
+                        <id>generate-stork-launchers</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>generate-stork-assembly</id>
+                        <goals>
+                            <goal>assembly</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
                 <groupId>org.eclipse.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
                 <version>${jetty.version}</version>
                 <configuration>
-                    <contextPath>/</contextPath>
+                    <webApp>
+                        <contextPath>/</contextPath>
+                    </webApp>
                     <stopKey>stop</stopKey>
                     <stopPort>8889</stopPort>
                     <scanIntervalSeconds>1</scanIntervalSeconds>
