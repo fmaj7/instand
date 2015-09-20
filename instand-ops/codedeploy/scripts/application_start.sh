@@ -2,7 +2,7 @@
 set -e
 /opt/wdr/env/instand/instand-service/target/stork/bin/instand-service --start
 
-PWD=$(PWD)
+PWD=$(pwd)
 cd /opt/wdr/env/instand/instand-mobile
 sudo yum install nodejs npm --enablerepo=epel
 sudo npm install -g cordova ionic
