@@ -24,6 +24,7 @@ import org.doctester.testbrowser.Request;
 import org.doctester.testbrowser.Response;
 import org.hamcrest.CoreMatchers;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 public class ApiControllerDocTesterTest extends NinjaDocTester {
@@ -54,7 +55,7 @@ public class ApiControllerDocTesterTest extends NinjaDocTester {
         ApplicationController.SimplePojo simplePojo 
                 = response.payloadJsonAs(ApplicationController.SimplePojo.class);
         
-        assertThat(simplePojo.content, CoreMatchers.equalTo("Hello Instand! Hello Json!"));
+        assertThat(simplePojo.content, equalTo("hello instand!"));
 
     
     }

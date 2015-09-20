@@ -16,6 +16,7 @@
 
 package controllers;
 
+import com.instand.Greeter;
 import ninja.Result;
 import ninja.Results;
 
@@ -34,7 +35,7 @@ public class ApplicationController {
     public Result helloWorldJson() {
         
         SimplePojo simplePojo = new SimplePojo();
-        simplePojo.content = "Hello Instand! Hello Json!";
+        simplePojo.content = new Greeter().getGreetingMessage();
 
         return Results.json().render(simplePojo);
 
