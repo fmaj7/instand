@@ -49,3 +49,9 @@ target/
 # Ionic
 hooks
 resources
+node_modules/
+platforms/
+plugins/
+
+# Instand-Mobile
+instand-mobile/www/lib
