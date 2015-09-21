@@ -165,10 +165,6 @@
       <scope>test</scope>
       <exclusions>
         <exclusion>
-          <artifactId>junit</artifactId>
-          <groupId>junit</groupId>
-        </exclusion>
-        <exclusion>
           <artifactId>mockito-core</artifactId>
           <groupId>org.mockito</groupId>
         </exclusion>
@@ -194,9 +190,29 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.16.6</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.12</version>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>hamcrest-core</artifactId>
+          <groupId>org.hamcrest</groupId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
   <properties>
+    <logback.version>1.0.1</logback.version>
     <ninja.version>5.1.5</ninja.version>
+    <slf4j.version>1.6.4</slf4j.version>
     <jetty.version>9.2.10.v20150310</jetty.version>
   </properties>
 </project>

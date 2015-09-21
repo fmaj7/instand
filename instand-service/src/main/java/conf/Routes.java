@@ -17,6 +17,7 @@
 package conf;
 
 
+import controllers.SubjectController;
 import ninja.AssetsController;
 import ninja.Router;
 import ninja.application.ApplicationRoutes;
@@ -29,8 +30,12 @@ public class Routes implements ApplicationRoutes {
         
         router.GET().route("/").with(ApplicationController.class, "index");
         router.GET().route("/hello_world.json").with(ApplicationController.class, "helloWorldJson");
-        
- 
+
+        // Subjects
+        router.POST().route("/subject").with(SubjectController.class, "create");
+        router.GET().route("/subject/{id}").with(SubjectController.class, "get");
+
+
         ///////////////////////////////////////////////////////////////////////
         // Assets (pictures / javascript)
         ///////////////////////////////////////////////////////////////////////    
