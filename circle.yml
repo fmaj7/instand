@@ -1,14 +1,13 @@
 machine:
   java:
     version: oraclejdk8
+  node:
+    version: 0.12.0
+    
 dependencies:
  override:
   - mvn install -Dmaven.test.skip=true
   - npm install -g cordova ionic
-
-machine:
-    node:
-      version: 0.12.0
 
 deployment:
   staging:
