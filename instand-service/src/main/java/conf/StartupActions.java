@@ -11,8 +11,8 @@ import ninja.lifecycle.Start;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-@Singleton
 @Slf4j
+@Singleton
 public class StartupActions {
 
     @Inject
