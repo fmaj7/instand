@@ -15,6 +15,7 @@ import java.util.Optional;
 @RequiredArgsConstructor(onConstructor=@__(@Inject))
 public class InstandApplicationServiceImpl implements InstandApplicationService {
 
+    @Inject
     private final SubjectRepository subjectRepo;
 
     /**
@@ -23,7 +24,7 @@ public class InstandApplicationServiceImpl implements InstandApplicationService 
     @Override
     public Subject createSubject(CreateSubjectInput input) {
         Subject subject = Subject.builder()
-                .id(Guid.randomBase32())
+                .id(Guid.randomBase64UrlSafe())
                 .createdByUserId(input.getCreatedByUserId())
                 .createdAt(Instant.now())
                 .title(input.getTitle())

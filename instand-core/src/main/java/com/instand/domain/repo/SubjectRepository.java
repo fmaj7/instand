@@ -8,12 +8,10 @@ import com.instand.domain.Subject;
 public interface SubjectRepository extends GenericRepository<String, Subject> {
 
     /**
-     * Finds the subject of the given id, or throws {@link EntityNotFoundException} if not found.
-     *
-     * @param id subject id
-     * @return the subject
-     * @throws EntityNotFoundException if subject is not found for the specified id.
+     * {@inheritDoc}
      */
-    Subject findOrElseThrow(String id);
-
+    @Override
+    default Subject findOrElseThrow(String id) {
+        return find(id).orElseThrow(() -> new EntityNotFoundException(Subject.class, id));
+    }
 }

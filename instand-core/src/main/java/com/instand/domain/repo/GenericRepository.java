@@ -27,6 +27,14 @@ public interface GenericRepository<K, E> {
     Optional<E> find(@NonNull K id);
 
     /**
+     * Finds the entity by id, or throws {@link EntityNotFoundException} if not found.
+     *
+     * @param id entity id
+     * @return entity found
+     */
+    E findOrElseThrow(@NonNull K id);
+
+    /**
      * Finds all entities.
      *
      * @return all entities
