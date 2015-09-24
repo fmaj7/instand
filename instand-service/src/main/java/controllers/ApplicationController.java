@@ -16,7 +16,6 @@
 
 package controllers;
 
-import com.instand.Greeter;
 import ninja.Result;
 import ninja.Results;
 
@@ -27,23 +26,16 @@ import com.google.inject.Singleton;
 public class ApplicationController {
 
     public Result index() {
-
         return Results.html();
-
     }
     
     public Result helloWorldJson() {
-        
         SimplePojo simplePojo = new SimplePojo();
-        simplePojo.content = new Greeter().getGreetingMessage();
-
+        simplePojo.content = "hello instand!";
         return Results.json().render(simplePojo);
-
     }
     
     public static class SimplePojo {
-
         public String content;
-        
     }
 }

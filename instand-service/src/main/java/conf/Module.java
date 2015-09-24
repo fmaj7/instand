@@ -18,15 +18,14 @@ package conf;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
+import com.instand.app.ApplicationServiceModule;
 
 @Singleton
 public class Module extends AbstractModule {
-    
 
     protected void configure() {
-        
-        // bind your injections here!
-        
+        install(new ApplicationServiceModule());
+        bind(StartupActions.class);
     }
 
 }
