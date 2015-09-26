@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+
 JAVA_VER=$(java -version 2>&1 | sed 's/java version "\(.*\)\.\(.*\)\..*"/\1\2/; 1q')
 if [[ "$JAVA_VER" -ge 18 ]]; then
     echo "good, Java is 8 or later"
