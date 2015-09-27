@@ -12,6 +12,7 @@ import ninja.Result;
 import ninja.Results;
 import ninja.params.PathParam;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -56,6 +57,17 @@ public class SubjectController {
                     .render(Error.notFound());
         }
         return Results.json().render(service.getSubject(id));
+    }
+
+    /**
+     * Finds all subjects.
+     *
+     * @return ninja result
+     */
+    public Result findAll() {
+        List<Subject> subjects = service.findAllSubjects();
+        return Results.json()
+                .render(subjects);
     }
 
 }
