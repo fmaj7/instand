@@ -25,6 +25,7 @@ public class Module extends AbstractModule {
 
     protected void configure() {
         install(new ApplicationServiceModule());
+        install(new BasicAuthModule());
         bind(StartupActions.class);
     }
 

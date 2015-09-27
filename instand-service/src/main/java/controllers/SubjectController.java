@@ -6,6 +6,8 @@ import com.instand.app.InstandApplicationService;
 import com.instand.app.CreateSubjectInput;
 import com.instand.domain.Subject;
 import lombok.NonNull;
+import ninja.BasicAuthFilter;
+import ninja.FilterWith;
 import ninja.Result;
 import ninja.Results;
 import ninja.params.PathParam;
@@ -16,6 +18,7 @@ import java.util.Optional;
  * Controller of subjects.
  */
 @Singleton
+@FilterWith(BasicAuthFilter.class)
 public class SubjectController {
 
     /**
