@@ -1,8 +1,11 @@
-package com.instand.domain.repo;
+package com.instand.domain.repo.mem;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Maps;
 import com.instand.domain.Entity;
+import com.instand.domain.Subject;
+import com.instand.domain.repo.EntityNotFoundException;
+import com.instand.domain.repo.GenericRepository;
 import lombok.NonNull;
 
 import java.util.List;
@@ -12,7 +15,7 @@ import java.util.Optional;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * In memory implementation of {@link GenericRepository}.
+ * In-memory implementation of {@link GenericRepository}.
  */
 public class InMemoryGenericRepository<K, E extends Entity<K>> implements GenericRepository<K, E> {
 
@@ -35,6 +38,14 @@ public class InMemoryGenericRepository<K, E extends Entity<K>> implements Generi
     public Optional<E> find(@NonNull K id) {
         E entity = entities.get(id);
         return Optional.ofNullable(entity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public E findOrElseThrow(@NonNull K id) {
+        return find(id).orElseThrow(() -> new EntityNotFoundException("Entity is not found fir id " + id));
     }
 
     /**

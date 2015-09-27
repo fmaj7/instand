@@ -6,6 +6,7 @@ import ninja.Result;
 
 
 /**
+ * An error object return to a REST client.
  */
 @Value
 @Builder

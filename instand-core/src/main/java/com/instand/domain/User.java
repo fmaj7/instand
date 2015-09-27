@@ -19,9 +19,15 @@ public class User {
     String id;
 
     /**
+     * Time when this user was created.
+     */
+    Instant createdAt;
+
+    /**
      * For authenticated user, the username is the unique username provided by the user during sign-up process. For
      * guest (i.e., unauthenticated) user, the username is a key that Instand locates on behalf of the user to uniquely
-     * identifies the guest user in best-effort (browser-id, app-id, etc.).
+     * identifies the guest user in best-effort. It will be in a form of a hash of some natural key (browser-id,
+     * app-id, etc.).
      */
     String username;
 
@@ -29,10 +35,5 @@ public class User {
      * Represents the account information for an authenticated user. If this user is a guest user, then it will be empty.
      */
     Optional<UserAccount> account;
-
-    /**
-     * Indicates time when this user was created.
-     */
-    Instant createdAt;
 
 }

@@ -1,13 +1,13 @@
 package com.instand.app;
 
 import com.google.inject.AbstractModule;
-import com.instand.domain.repo.RepositoryModule;
+import com.instand.domain.repo.mem.InMemoryRepositoryModule;
 
 public class ApplicationServiceModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        install(new RepositoryModule());
+        install(new InMemoryRepositoryModule());
         bind(InstandApplicationService.class).to(InstandApplicationServiceImpl.class);
     }
 }
