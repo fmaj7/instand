@@ -6,16 +6,20 @@ import com.instand.app.InstandApplicationService;
 import com.instand.app.CreateSubjectInput;
 import com.instand.domain.Subject;
 import lombok.NonNull;
+import ninja.BasicAuthFilter;
+import ninja.FilterWith;
 import ninja.Result;
 import ninja.Results;
 import ninja.params.PathParam;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
  * Controller of subjects.
  */
 @Singleton
+@FilterWith(BasicAuthFilter.class)
 public class SubjectController {
 
     /**
@@ -53,6 +57,17 @@ public class SubjectController {
                     .render(Error.notFound());
         }
         return Results.json().render(service.getSubject(id));
+    }
+
+    /**
+     * Finds all subjects.
+     *
+     * @return ninja result
+     */
+    public Result findAll() {
+        List<Subject> subjects = service.findAllSubjects();
+        return Results.json()
+                .render(subjects);
     }
 
 }

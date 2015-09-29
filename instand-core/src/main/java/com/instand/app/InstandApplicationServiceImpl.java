@@ -7,6 +7,7 @@ import com.instand.domain.repo.SubjectRepository;
 import lombok.RequiredArgsConstructor;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -39,5 +40,13 @@ public class InstandApplicationServiceImpl implements InstandApplicationService 
     @Override
     public Optional<Subject> getSubject(String subjectId) {
         return subjectRepo.find(subjectId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Subject> findAllSubjects() {
+        return subjectRepo.findAll();
     }
 }

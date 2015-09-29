@@ -3,8 +3,10 @@ package com.instand.common.jackson;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import com.google.inject.Inject;
 import com.instand.common.serde.Deserializer;
 import com.instand.common.serde.Serializer;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 
@@ -17,12 +19,13 @@ import lombok.RequiredArgsConstructor;
  * Second, it provides {@link Serializer} and {@link Deserializer} which provides convenient APIs for serialization
  * and deserialization.
  */
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor=@__(@Inject))
 public class JacksonMapper {
 
     /**
      * Wrapped {@link ObjectMapper}.
      */
+    @NonNull
     private final ObjectMapper om;
 
     /**

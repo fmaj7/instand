@@ -1,9 +1,12 @@
 package com.instand.domain.repo.prod;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
-import com.amazonaws.services.dynamodbv2.document.DynamoDB;
-import com.amazonaws.services.dynamodbv2.document.Item;
-import com.amazonaws.services.dynamodbv2.document.Table;
+import com.amazonaws.services.dynamodbv2.document.*;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.ScanRequest;
+import com.amazonaws.services.dynamodbv2.model.ScanResult;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.google.inject.Inject;
 import com.instand.common.jackson.JacksonMapper;
 import com.instand.domain.Subject;
@@ -11,7 +14,9 @@ import com.instand.domain.repo.SubjectRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -22,6 +27,7 @@ public class DynamoSubjectRepository implements SubjectRepository {
 
     public static final String ID_ATTR_NAME = "id";
     public static final String DOC_ATTR_NAME = "document";
+    public static final String TABLE_NAME = "na-alpha-subject";
 
     @NonNull
     private final AmazonDynamoDBClient client;
@@ -61,7 +67,16 @@ public class DynamoSubjectRepository implements SubjectRepository {
      */
     @Override
     public List<Subject> findAll() {
-        throw new UnsupportedOperationException("Not implemented yet");
+        DynamoDB ddb = new DynamoDB(client);
+        Table table = getTable(ddb);
+        ItemCollection<ScanOutcome> items = table.scan();
+        List<Subject> results = Lists.newArrayList();
+        for (Item item : items) {
+            String json = item.getJSON(DOC_ATTR_NAME);
+            Subject s = jm.deserializer(Subject.class).deserialize(json);
+            results.add(s);
+        }
+        return results;
     }
 
     /**

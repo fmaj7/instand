@@ -32,8 +32,9 @@ public class Routes implements ApplicationRoutes {
         router.GET().route("/hello-world.json").with(ApplicationController.class, "helloWorldJson");
 
         // Subjects
-        router.POST().route("/subject").with(SubjectController.class, "create");
-        router.GET().route("/subject/{id}").with(SubjectController.class, "get");
+        router.POST().route("/subjects").with(SubjectController.class, "create");
+        router.GET().route("/subjects/{id}").with(SubjectController.class, "get");
+        router.GET().route("/subjects").with(SubjectController.class, "findAll");
 
 
         ///////////////////////////////////////////////////////////////////////
