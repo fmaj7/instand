@@ -10,7 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 public class CreateSubjectInput {
 
-    private String createdByUserId;
+    String createdByUserId;
 
-    private String title;
+    String title;
 }

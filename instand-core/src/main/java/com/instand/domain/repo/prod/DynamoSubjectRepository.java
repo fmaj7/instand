@@ -58,6 +58,9 @@ public class DynamoSubjectRepository implements SubjectRepository {
         DynamoDB ddb = new DynamoDB(client);
         Table table = getTable(ddb);
         Item item = table.getItem(ID_ATTR_NAME, id);
+        if (item == null) {
+            return Optional.empty();
+        }
         String json = item.getJSON(DOC_ATTR_NAME);
         return Optional.ofNullable(jm.deserializer(Subject.class).deserialize(json));
     }
@@ -113,6 +116,6 @@ public class DynamoSubjectRepository implements SubjectRepository {
 
     private Table getTable(DynamoDB ddb) {
         // TODO construct table name using runtime region and stage data
-        return ddb.getTable("na-alpha-subject");
+        return ddb.getTable(TABLE_NAME);
     }
 }

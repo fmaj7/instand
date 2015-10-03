@@ -54,9 +54,9 @@ public class SubjectController {
         if (!optSubject.isPresent()) {
             return Results.json()
                     .status(Result.SC_404_NOT_FOUND)
-                    .render(Error.notFound());
+                    .render(ErrorDescriptor.notFound());
         }
-        return Results.json().render(service.getSubject(id));
+        return Results.json().render(optSubject.get());
     }
 
     /**

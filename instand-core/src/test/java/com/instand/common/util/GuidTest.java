@@ -2,6 +2,8 @@ package com.instand.common.util;
 
 import org.junit.Test;
 
+import java.util.UUID;
+
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
 
