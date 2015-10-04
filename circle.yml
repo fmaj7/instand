@@ -20,5 +20,5 @@ deployment:
           revision_type: S3
           s3_location:
             bucket: com.instand.circleci
-            key_pattern: instand-{BRANCH}-{SHORT_COMMIT}
+            key_pattern: instand-{BRANCH}-{SHORT_COMMIT}-{BUILD_NUM}
         deployment_group: instand-dg
