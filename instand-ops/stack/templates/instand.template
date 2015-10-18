@@ -1,0 +1,70 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Instand Stack",
+  "Resources": {
+    "InfrastructureStack": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Join": [
+            "/",
+            [
+              "https://s3.amazonaws.com",
+              "cloud-formation-stack-template",
+              "instand_infrastructure.template"
+            ]
+          ]
+        }
+      }
+    },
+    "ServiceStack": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Join": [
+            "/",
+            [
+              "https://s3.amazonaws.com",
+              "cloud-formation-stack-template",
+              "instand_service.template"
+            ]
+          ]
+        },
+        "Parameters": {
+          "Subnets": {
+            "Fn::GetAtt": ["InfrastructureStack", "Outputs.Subnets"]
+          },
+          "Vpc": {
+            "Fn::GetAtt": ["InfrastructureStack", "Outputs.Vpc"]
+          },
+          "MobileElb": {
+            "Fn::GetAtt": ["MobileStack", "Outputs.Elb"]
+          }
+        }
+      }
+    },
+    "MobileStack": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Join": [
+            "/",
+            [
+              "https://s3.amazonaws.com",
+              "cloud-formation-stack-template",
+              "instand_mobile.template"
+            ]
+          ]
+        },
+        "Parameters": {
+          "Subnets": {
+            "Fn::GetAtt": ["InfrastructureStack", "Outputs.Subnets"]
+          },
+          "Vpc": {
+            "Fn::GetAtt": ["InfrastructureStack", "Outputs.Vpc"]
+          }
+        }
+      }
+    }
+  }
+}
