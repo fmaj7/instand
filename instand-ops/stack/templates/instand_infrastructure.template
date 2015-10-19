@@ -2,7 +2,7 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "Instand Stack",
   "Resources": {
-    "InstandVpc": {
+    "Vpc": {
       "Type": "AWS::EC2::VPC",
       "Properties": {
         "CidrBlock": "172.31.0.0/16",
@@ -11,52 +11,52 @@
         "EnableDnsHostnames": "true"
       }
     },
-    "InstandSubnet1": {
+    "Subnet1": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "172.31.32.0/20",
         "AvailabilityZone": "us-east-1e",
         "VpcId": {
-          "Ref": "InstandVpc"
+          "Ref": "Vpc"
         }
       }
     },
-    "InstandSubnet2": {
+    "Subnet2": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "172.31.48.0/20",
         "AvailabilityZone": "us-east-1a",
         "VpcId": {
-          "Ref": "InstandVpc"
+          "Ref": "Vpc"
         }
       }
     },
-    "InstandSubnet3": {
+    "Subnet3": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "172.31.16.0/20",
         "AvailabilityZone": "us-east-1c",
         "VpcId": {
-          "Ref": "InstandVpc"
+          "Ref": "Vpc"
         }
       }
     },
-    "InstandSubnet4": {
+    "Subnet4": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
         "CidrBlock": "172.31.0.0/20",
         "AvailabilityZone": "us-east-1b",
         "VpcId": {
-          "Ref": "InstandVpc"
+          "Ref": "Vpc"
         }
       }
     },
-    "InstandIgw": {
+    "Igw": {
       "Type": "AWS::EC2::InternetGateway",
       "Properties": {
       }
     },
-    "InstandDopt": {
+    "Dopt": {
       "Type": "AWS::EC2::DHCPOptions",
       "Properties": {
         "DomainName": "ec2.internal",
@@ -65,50 +65,50 @@
         ]
       }
     },
-    "InstandVpcDoptAssociation": {
+    "VpcDoptAssociation": {
       "Type": "AWS::EC2::VPCDHCPOptionsAssociation",
       "Properties": {
         "VpcId": {
-          "Ref": "InstandVpc"
+          "Ref": "Vpc"
         },
         "DhcpOptionsId": {
-          "Ref": "InstandDopt"
+          "Ref": "Dopt"
         }
       }
     },
-    "InstandVpcGatewayAttachment": {
+    "VpcGatewayAttachment": {
       "Type": "AWS::EC2::VPCGatewayAttachment",
       "Properties": {
         "VpcId": {
-          "Ref": "InstandVpc"
+          "Ref": "Vpc"
         },
         "InternetGatewayId": {
-          "Ref": "InstandIgw"
+          "Ref": "Igw"
         }
       }
     },
-    "InstandRoute": {
+    "Route": {
       "Type": "AWS::EC2::Route",
       "Properties": {
         "DestinationCidrBlock": "0.0.0.0/0",
         "RouteTableId": {
-          "Ref": "InstandRouteTable"
+          "Ref": "RouteTable"
         },
         "GatewayId": {
-          "Ref": "InstandIgw"
+          "Ref": "Igw"
         }
       },
-      "DependsOn": "InstandVpcGatewayAttachment"
+      "DependsOn": "VpcGatewayAttachment"
     },
-    "InstandAcl": {
+    "Acl": {
       "Type": "AWS::EC2::NetworkAcl",
       "Properties": {
         "VpcId": {
-          "Ref": "InstandVpc"
+          "Ref": "Vpc"
         }
       }
     },
-    "InstandAclEntry1": {
+    "AclEntry1": {
       "Type": "AWS::EC2::NetworkAclEntry",
       "Properties": {
         "CidrBlock": "0.0.0.0/0",
@@ -117,11 +117,11 @@
         "RuleAction": "allow",
         "RuleNumber": "100",
         "NetworkAclId": {
-          "Ref": "InstandAcl"
+          "Ref": "Acl"
         }
       }
     },
-    "InstandAclEntry2": {
+    "AclEntry2": {
       "Type": "AWS::EC2::NetworkAclEntry",
       "Properties": {
         "CidrBlock": "0.0.0.0/0",
@@ -130,68 +130,68 @@
         "RuleAction": "allow",
         "RuleNumber": "100",
         "NetworkAclId": {
-          "Ref": "InstandAcl"
+          "Ref": "Acl"
         }
       }
     },
-    "InstandSubnet1Acl": {
+    "Subnet1Acl": {
       "Type": "AWS::EC2::SubnetNetworkAclAssociation",
       "Properties": {
         "NetworkAclId": {
-          "Ref": "InstandAcl"
+          "Ref": "Acl"
         },
         "SubnetId": {
-          "Ref": "InstandSubnet1"
+          "Ref": "Subnet1"
         }
       }
     },
-    "InstandSubnet2Acl": {
+    "Subnet2Acl": {
       "Type": "AWS::EC2::SubnetNetworkAclAssociation",
       "Properties": {
         "NetworkAclId": {
-          "Ref": "InstandAcl"
+          "Ref": "Acl"
         },
         "SubnetId": {
-          "Ref": "InstandSubnet2"
+          "Ref": "Subnet2"
         }
       }
     },
-    "InstandSubnet3Acl": {
+    "Subnet3Acl": {
       "Type": "AWS::EC2::SubnetNetworkAclAssociation",
       "Properties": {
         "NetworkAclId": {
-          "Ref": "InstandAcl"
+          "Ref": "Acl"
         },
         "SubnetId": {
-          "Ref": "InstandSubnet3"
+          "Ref": "Subnet3"
         }
       }
     },
-    "InstandSubnet4Acl": {
+    "Subnet4Acl": {
       "Type": "AWS::EC2::SubnetNetworkAclAssociation",
       "Properties": {
         "NetworkAclId": {
-          "Ref": "InstandAcl"
+          "Ref": "Acl"
         },
         "SubnetId": {
-          "Ref": "InstandSubnet4"
+          "Ref": "Subnet4"
         }
       }
     },
-    "InstandRouteTable": {
+    "RouteTable": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {
-          "Ref": "InstandVpc"
+          "Ref": "Vpc"
         }
       }
     },
-    "CircleciInstandBucketS3": {
+    "CircleCi": {
       "Type": "AWS::S3::Bucket",
       "Properties": {
         "AccessControl": "Private",
         "VersioningConfiguration": {
-          "Status": "Suspended"
+          "Status": "Enabled"
         }
       }
     }
@@ -199,7 +199,7 @@
   "Outputs": {
     "Vpc": {
       "Value": {
-        "Ref": "InstandVpc"
+        "Ref": "Vpc"
       }
     },
     "Subnets": {
@@ -208,16 +208,16 @@
           ",",
           [
             {
-              "Ref": "InstandSubnet1"
+              "Ref": "Subnet1"
             },
             {
-              "Ref": "InstandSubnet2"
+              "Ref": "Subnet2"
             },
             {
-              "Ref": "InstandSubnet3"
+              "Ref": "Subnet3"
             },
             {
-              "Ref": "InstandSubnet4"
+              "Ref": "Subnet4"
             }
           ]
         ]

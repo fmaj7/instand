@@ -33,7 +33,7 @@
         "CrossZone": "true",
         "SecurityGroups": [
           {
-            "Ref": "MobileElbSecurityGroup"
+            "Ref": "ElbSecurityGroup"
           }
         ],
         "Listeners": [
@@ -46,7 +46,7 @@
         ]
       }
     },
-    "MobileElbSecurityGroup": {
+    "ElbSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "AutoScaling-Security-Group-1",
@@ -55,11 +55,11 @@
         }
       }
     },
-    "MobileElbSecurityGroupIngress1": {
+    "ElbSecurityGroupIngress1": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "MobileElbSecurityGroup"
+          "Ref": "ElbSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "80",
@@ -67,11 +67,11 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "MobileElbSecurityGroupIngress2": {
+    "ElbSecurityGroupIngress2": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "MobileElbSecurityGroup"
+          "Ref": "ElbSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "8080",
@@ -79,11 +79,11 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "MobileElbSecurityGroupIngress3": {
+    "ElbSecurityGroupIngress3": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "MobileElbSecurityGroup"
+          "Ref": "ElbSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "22",
@@ -91,11 +91,11 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "MobileElbSecurityGroupIngress4": {
+    "ElbSecurityGroupIngress4": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "MobileElbSecurityGroup"
+          "Ref": "ElbSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "8100",
@@ -107,19 +107,19 @@
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
         "GroupId": {
-          "Ref": "MobileElbSecurityGroup"
+          "Ref": "ElbSecurityGroup"
         },
         "IpProtocol": "-1",
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "DynamodbInstandSnsTopic": {
+    "DynamodbSnsTopic": {
       "Type": "AWS::SNS::Topic",
       "Properties": {
         "DisplayName": "dynamodb"
       }
     },
-    "UnhealthyHostCountInstandServiceAlarm": {
+    "UnhealthyHostCountHigh": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ActionsEnabled": "true",

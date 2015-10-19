@@ -90,7 +90,7 @@
             "Ref": "MobileElb"
           },
           {
-            "Ref": "ServiceElb"
+            "Ref": "Elb"
           }
         ],
         "MetricsCollection": [
@@ -125,7 +125,7 @@
         "InstanceMonitoring": "true",
         "SecurityGroups": [
           {
-            "Ref": "ServiceSg1"
+            "Ref": "ElbSecurityGroup"
           }
         ],
         "BlockDeviceMappings": [
@@ -138,7 +138,7 @@
         ]
       }
     },
-    "ServiceElb": {
+    "Elb": {
       "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
       "Properties": {
         "Subnets": {
@@ -161,7 +161,7 @@
         "CrossZone": "true",
         "SecurityGroups": [
           {
-            "Ref": "ServiceSg1"
+            "Ref": "ElbSecurityGroup"
           }
         ],
         "Listeners": [
@@ -174,7 +174,7 @@
         ]
       }
     },
-    "SubjetInstandServiceDdbTable": {
+    "Subject": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
         "AttributeDefinitions": [
@@ -195,7 +195,7 @@
         }
       }
     },
-    "UserInstandServiceDdbTable": {
+    "User": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
         "AttributeDefinitions": [
@@ -258,7 +258,7 @@
         ]
       }
     },
-    "ServiceSg1": {
+    "ElbSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "AutoScaling-Security-Group-1",
@@ -267,11 +267,11 @@
         }
       }
     },
-    "ServiceSgIngress1": {
+    "ElbSecurityGroupIngress1": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "ServiceSg1"
+          "Ref": "ElbSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "80",
@@ -279,11 +279,11 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "ServiceSgIngress2": {
+    "ElbSecurityGroupIngress2": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "ServiceSg1"
+          "Ref": "ElbSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "8080",
@@ -291,11 +291,11 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "ServiceSgIngress3": {
+    "ElbSecurityGroupIngress3": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "ServiceSg1"
+          "Ref": "ElbSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "22",
@@ -303,11 +303,11 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "ServiceSgIngress4": {
+    "ElbSecurityGroupIngress4": {
       "Type": "AWS::EC2::SecurityGroupIngress",
       "Properties": {
         "GroupId": {
-          "Ref": "ServiceSg1"
+          "Ref": "ElbSecurityGroup"
         },
         "IpProtocol": "tcp",
         "FromPort": "8100",
@@ -315,28 +315,28 @@
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "ServiceSgEgress": {
+    "ElbSecurityGroupEgress": {
       "Type": "AWS::EC2::SecurityGroupEgress",
       "Properties": {
         "GroupId": {
-          "Ref": "ServiceSg1"
+          "Ref": "ElbSecurityGroup"
         },
         "IpProtocol": "-1",
         "CidrIp": "0.0.0.0/0"
       }
     },
-    "DynamodbInstandSnsTopic": {
+    "DynamodbSnsTopic": {
       "Type": "AWS::SNS::Topic",
       "Properties": {
         "DisplayName": "dynamodb"
       }
     },
-    "DynamodbInstandServiceSnsTopicPolicy": {
+    "DynamodbSnsTopicPolicy": {
       "Type": "AWS::SNS::TopicPolicy",
       "Properties": {
         "Topics": [
           {
-            "Ref": "DynamodbInstandSnsTopic"
+            "Ref": "DynamodbSnsTopic"
           }
         ],
         "PolicyDocument": {
@@ -361,7 +361,7 @@
                 "SNS:SetTopicAttributes"
               ],
               "Resource": {
-                "Ref": "DynamodbInstandSnsTopic"
+                "Ref": "DynamodbSnsTopic"
               },
               "Condition": {
                 "StringEquals": {
@@ -373,7 +373,7 @@
         }
       }
     },
-    "InstanceOverusedInstandServiceAlarm": {
+    "InstanceOverusedAlarm": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ActionsEnabled": "true",
@@ -390,7 +390,7 @@
         ]
       }
     },
-    "AlertInstandTopicSNS": {
+    "AlertSNSTopic": {
       "Type": "AWS::SNS::Topic",
       "Properties": {
         "DisplayName": "INST-ALRT",
@@ -402,12 +402,12 @@
         ]
       }
     },
-    "AlertInstandServiceSnsTopicPolicy": {
+    "AlertSnsTopicPolicy": {
       "Type": "AWS::SNS::TopicPolicy",
       "Properties": {
         "Topics": [
           {
-            "Ref": "AlertInstandTopicSNS"
+            "Ref": "AlertSNSTopic"
           }
         ],
         "PolicyDocument": {
@@ -432,7 +432,7 @@
                 "SNS:SetTopicAttributes"
               ],
               "Resource": {
-                "Ref": "AlertInstandTopicSNS"
+                "Ref": "AlertSNSTopic"
               },
               "Condition": {
                 "StringEquals": {
@@ -444,7 +444,7 @@
         }
       }
     },
-    "ConsumedReadCapacityUnitsSubjectInstandServiceAlarm": {
+    "SubjectReadCapacityLow": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ActionsEnabled": "true",
@@ -466,7 +466,7 @@
         ]
       }
     },
-    "ConsumedWriteCapacityUnitsSubjectInstandServiceAlarm": {
+    "SubjectWriteCapacityLow": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ActionsEnabled": "true",
@@ -488,7 +488,7 @@
         ]
       }
     },
-    "ConsumedReadCapacityUnitsUserInstandServiceAlarm": {
+    "UserReadCapacityLow": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ActionsEnabled": "true",
@@ -510,7 +510,7 @@
         ]
       }
     },
-    "ConsumedWriteCapacityUnitsUserInstandServiceAlarm": {
+    "UserWriteCapacityLow": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ActionsEnabled": "true",
@@ -532,7 +532,7 @@
         ]
       }
     },
-    "EmailAddressIndexConsumedReadCapacityUnitsInstandServiceAlarm": {
+    "EmailAddressIndexReadCapacityLow": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ActionsEnabled": "true",
@@ -558,7 +558,7 @@
         ]
       }
     },
-    "EmailAddressIndexConsumedWriteCapacityUnitsInstandServiceAlarm": {
+    "EmailAddressIndexWriteCapacityLow": {
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
         "ActionsEnabled": "true",
@@ -588,7 +588,7 @@
   "Outputs": {
     "Elb": {
       "Value": {
-        "Ref": "ServiceElb"
+        "Ref": "Elb"
       }
     }
   }
