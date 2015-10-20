@@ -1,6 +1,14 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "Instand Stack",
+  "Parameters": {
+    "StackPrefix": {
+      "Type": "String"
+    },
+    "TemplateRootUrl": {
+      "Type": "String"
+    }
+  },
   "Resources": {
     "InfrastructureStack": {
       "Type": "AWS::CloudFormation::Stack",
@@ -9,11 +17,15 @@
           "Fn::Join": [
             "/",
             [
-              "https://s3.amazonaws.com",
-              "cloud-formation-stack-template",
+              {"Ref": "TemplateRootUrl"},
               "instand_infrastructure.template"
             ]
           ]
+        },
+        "Parameters": {
+          "StackPrefix": {
+            "Ref": "StackPrefix"
+          }
         }
       }
     },
@@ -24,8 +36,7 @@
           "Fn::Join": [
             "/",
             [
-              "https://s3.amazonaws.com",
-              "cloud-formation-stack-template",
+              {"Ref": "TemplateRootUrl"},
               "instand_service.template"
             ]
           ]
@@ -39,6 +50,9 @@
           },
           "MobileElb": {
             "Fn::GetAtt": ["MobileStack", "Outputs.Elb"]
+          },
+          "StackPrefix": {
+            "Ref": "StackPrefix"
           }
         }
       }
@@ -50,8 +64,7 @@
           "Fn::Join": [
             "/",
             [
-              "https://s3.amazonaws.com",
-              "cloud-formation-stack-template",
+              {"Ref": "TemplateRootUrl"},
               "instand_mobile.template"
             ]
           ]
@@ -62,6 +75,9 @@
           },
           "Vpc": {
             "Fn::GetAtt": ["InfrastructureStack", "Outputs.Vpc"]
+          },
+          "StackPrefix": {
+            "Ref": "StackPrefix"
           }
         }
       }
