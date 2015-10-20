@@ -33,4 +33,12 @@ public class ErrorDescriptor {
                 .message(message)
                 .build();
     }
+
+    public static ErrorDescriptor illegalArgument(String message) {
+        return ErrorDescriptor.builder()
+                .status(Result.SC_400_BAD_REQUEST)
+                .type("IllegalArgumentException")
+                .message(message)
+                .build();
+    }
 }

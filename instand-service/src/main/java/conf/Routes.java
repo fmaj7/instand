@@ -34,7 +34,7 @@ public class Routes implements ApplicationRoutes {
         router.GET().route("/hello-world.json").with(ApplicationController.class, "helloWorldJson");
 
         // Users
-        router.POST().route("/users").with(UserController.class, "register");
+        router.POST().route("/users").with(UserController.class, "create");
         router.GET().route("/users/{id}").with(UserController.class, "get");
         router.GET().route("/users/q/username/{username}").with(UserController.class, "findByUsername");
         router.GET().route("/users/q/email-address/{emailAddress}").with(UserController.class, "findByEmailAddress");

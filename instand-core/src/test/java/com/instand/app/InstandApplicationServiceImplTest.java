@@ -39,15 +39,15 @@ public class InstandApplicationServiceImplTest {
     }
 
     @Test
-    public void testRegisterUserShouldReturnUserWhenRepositoryReturnUser() throws Exception {
-        RegisterUserInput input = RegisterUserInput.builder()
+    public void testCreateUserShouldReturnUserWhenRepositoryReturnUser() throws Exception {
+        CreateUserInput input = CreateUserInput.builder()
                 .username("foo")
                 .emailAddress("foo@gmail.com")
                 .password("bar")
                 .build();
         User user = User.builder().build();
         when(userRepository.create(user)).thenReturn(user);
-        User out = applicationService.registerUser(input);
+        User out = applicationService.createUser(input);
         assertThat(out.getUsername(), equalTo("foo"));
         assertThat(out.getAccount().get().getEmailAddress(), equalTo("foo@gmail.com"));
         assertThat(out.getId(), notNullValue());
@@ -56,25 +56,25 @@ public class InstandApplicationServiceImplTest {
     }
 
     @Test(expected = EntityAlreadyExistsException.class)
-    public void testRegisterUserShouldReturnThrowWhenRepositoryContainsEmailAddressReturnTrue() throws Exception {
-        RegisterUserInput input = RegisterUserInput.builder()
+    public void testCreateUserShouldReturnThrowWhenRepositoryContainsEmailAddressReturnTrue() throws Exception {
+        CreateUserInput input = CreateUserInput.builder()
                 .username("foo")
                 .emailAddress("foo@gmail.com")
                 .password("bar")
                 .build();
         when(userRepository.containsEmailAddress("foo@gmail.com")).thenReturn(true);
-        applicationService.registerUser(input);
+        applicationService.createUser(input);
     }
 
     @Test(expected = EntityAlreadyExistsException.class)
-    public void testRegisterUserShouldReturnThrowWhenRepositoryContainsUsernameReturnTrue() throws Exception {
-        RegisterUserInput input = RegisterUserInput.builder()
+    public void testCreateUserShouldReturnThrowWhenRepositoryContainsUsernameReturnTrue() throws Exception {
+        CreateUserInput input = CreateUserInput.builder()
                 .username("foo")
                 .emailAddress("foo@gmail.com")
                 .password("bar")
                 .build();
         when(userRepository.containsUsername("foo")).thenReturn(true);
-        applicationService.registerUser(input);
+        applicationService.createUser(input);
     }
 
     @Test

@@ -1,7 +1,7 @@
 package controllers;
 
+import com.instand.app.CreateUserInput;
 import com.instand.app.InstandApplicationService;
-import com.instand.app.RegisterUserInput;
 import com.instand.domain.User;
 import com.instand.domain.repo.EntityAlreadyExistsException;
 import ninja.Result;
@@ -32,19 +32,19 @@ public class UserControllerTest {
     }
 
     @Test
-    public void testRegisterUserReturnOkWhenAppServiceReturnUser() {
-        RegisterUserInput input = RegisterUserInput.builder().build();
+    public void testCreateUserReturnOkWhenAppServiceReturnUser() {
+        CreateUserInput input = CreateUserInput.builder().build();
         User user = User.builder().build();
-        when(applicationService.registerUser(input)).thenReturn(user);
-        Result result = controller.register(input);
+        when(applicationService.createUser(input)).thenReturn(user);
+        Result result = controller.create(input);
         assertThat(result.getStatusCode(), equalTo(Result.SC_200_OK));
     }
 
     @Test
-    public void testRegisterUserReturnBadRequestWhenAppServiceThrow() {
-        RegisterUserInput input = RegisterUserInput.builder().build();
-        when(applicationService.registerUser(input)).thenThrow(new EntityAlreadyExistsException(""));
-        Result result = controller.register(input);
+    public void testCreateUserReturnBadRequestWhenAppServiceThrow() {
+        CreateUserInput input = CreateUserInput.builder().build();
+        when(applicationService.createUser(input)).thenThrow(new EntityAlreadyExistsException(""));
+        Result result = controller.create(input);
         assertThat(result.getStatusCode(), equalTo(Result.SC_400_BAD_REQUEST));
     }
 

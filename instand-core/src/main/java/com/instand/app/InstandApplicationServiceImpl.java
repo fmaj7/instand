@@ -32,7 +32,7 @@ public class InstandApplicationServiceImpl implements InstandApplicationService 
      * {@inheritDoc}
      */
     @Override
-    public User registerUser(RegisterUserInput input) {
+    public User createUser(CreateUserInput input) {
         UserAccount userAccount = UserAccount.builder()
                 .emailAddress(input.getEmailAddress())
                 .passwordHash(input.getPassword()) // TODO: hash password
@@ -63,31 +63,16 @@ public class InstandApplicationServiceImpl implements InstandApplicationService 
      * {@inheritDoc}
      */
     @Override
-    public boolean authenticateUser(String emailOrUsername, String password) {
-        Optional<User> user;
-        // check if it is an email. FIXME: need the real, robust email check
-        if (emailOrUsername.contains("@")) {
-            user = findUserByEmailAddress(emailOrUsername);
-        } else {
-            user = findUserByUsername(emailOrUsername);
-        }
-        if (!user.isPresent()) {
-            throw new RuntimeException("No user was found for " + emailOrUsername);
-        }
-        User u = user.get();
-        if (!u.getAccount().isPresent()) {
-            throw new RuntimeException("No registered user was found for " + emailOrUsername);
-        }
-        UserAccount userAccount = u.getAccount().get();
-        return userAccount.matchesPassword(password);
+    public Optional<User> getUser(String id) {
+        return userRepo.find(id);
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public Optional<User> getUser(String id) {
-        return userRepo.find(id);
+    public boolean existsUser(String id) {
+        return userRepo.exists(id);
     }
 
     /**
@@ -119,6 +104,11 @@ public class InstandApplicationServiceImpl implements InstandApplicationService 
      */
     @Override
     public Subject createSubject(CreateSubjectInput input) {
+        String createdByUserId = input.getCreatedByUserId();
+        if (!existsUser(createdByUserId)) {
+            String msg = String.format("Cannot find user with createdByUserId %s", createdByUserId);
+            throw new IllegalArgumentException(msg);
+        }
         Subject subject = Subject.builder()
                 .id(Guid.randomBase32())
                 .createdByUserId(input.getCreatedByUserId())

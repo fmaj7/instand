@@ -26,6 +26,7 @@ import java.util.Optional;
 public class DynamoSubjectRepository implements SubjectRepository {
 
     public static final String ID_ATTR_NAME = "id";
+    public static final String CREATED_BY_USER_ID_ATTR_NAME = "createdByUserId";
     public static final String DOC_ATTR_NAME = "document";
     public static final String TABLE_NAME = "na-alpha-subject";
 
@@ -45,6 +46,7 @@ public class DynamoSubjectRepository implements SubjectRepository {
         Table table = getTable(ddb);
         Item item = new Item()
                 .withPrimaryKey(ID_ATTR_NAME, entity.getId())
+                .withString(CREATED_BY_USER_ID_ATTR_NAME, entity.getCreatedByUserId())
                 .withJSON(DOC_ATTR_NAME, json);
         table.putItem(item);
         return entity;
@@ -111,7 +113,8 @@ public class DynamoSubjectRepository implements SubjectRepository {
      */
     @Override
     public boolean exists(@NonNull String id) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        // TODO: more efficient implementation
+        return find(id).isPresent();
     }
 
     private Table getTable(DynamoDB ddb) {

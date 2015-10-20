@@ -23,6 +23,11 @@ public class Interpretation {
     Instant createdAt;
 
     /**
+     * Time when this interpretation was last updated.
+     */
+    Instant updatedAt;
+
+    /**
      * Id of subject this interpretation belongs to.
      */
     String interpretingSubjectId;

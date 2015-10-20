@@ -2,8 +2,8 @@ package controllers;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.instand.app.CreateUserInput;
 import com.instand.app.InstandApplicationService;
-import com.instand.app.RegisterUserInput;
 import com.instand.domain.User;
 import com.instand.domain.UserDescriptor;
 import com.instand.domain.repo.EntityAlreadyExistsException;
@@ -41,9 +41,9 @@ public class UserController {
      * @param input RegisterUserInput
      * @return ninja result
      */
-    public Result register(@NonNull RegisterUserInput input) {
+    public Result create(@NonNull CreateUserInput input) {
         try {
-            User user = service.registerUser(input);
+            User user = service.createUser(input);
             return Results.json()
                     .render(user.toDescriptor());
 

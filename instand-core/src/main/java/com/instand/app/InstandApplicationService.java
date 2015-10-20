@@ -23,6 +23,14 @@ public interface InstandApplicationService {
     Optional<User> getUser(String id);
 
     /**
+     * Return whether the user exists with the specified id.
+     *
+     * @param id user id
+     * @return whether the user exists.
+     */
+    boolean existsUser(String id);
+
+    /**
      * Finds user by username.
      *
      * @param username username
@@ -39,24 +47,12 @@ public interface InstandApplicationService {
     Optional<User> findUserByEmailAddress(String emailAddress);
 
     /**
-     * Register a user.
+     * Creates a user.
      *
      * @param input input
-     * @return the user registered
+     * @return the user created
      */
-    User registerUser(RegisterUserInput input);
-
-    /**
-     * Checks whether the email address or username of a user matches the given password.
-     * <p>
-     * Note that it is stateless; it is not to "log in a user within a session" - it merely checks
-     * user credentials against user accounts.
-     *
-     * @param emailOrUsername email address or username
-     * @param password password
-     * @return true if matches
-     */
-    boolean authenticateUser(String emailOrUsername, String password);
+    User createUser(CreateUserInput input);
 
     /**
      * Finds all users.
