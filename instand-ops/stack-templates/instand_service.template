@@ -1,9 +1,12 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Instand Stack",
+  "Description": "Service Stack, contains resources only used by the backend rest service(we need a name for the service)",
   "Parameters": {
     "Subnets": {
       "Type": "CommaDelimitedList"
+    },
+    "StackPrefix": {
+      "Type": "String"
     },
     "Vpc": {
       "Type": "AWS::EC2::VPC::Id"
@@ -143,6 +146,16 @@
       "Properties": {
         "Subnets": {
           "Ref": "Subnets"
+        },
+        "LoadBalancerName": {
+          "Fn::Join": [
+            "-",
+            [
+              {"Ref": "StackPrefix"},
+              "service",
+              "elb"
+            ]
+          ]
         },
         "HealthCheck": {
           "HealthyThreshold": "10",

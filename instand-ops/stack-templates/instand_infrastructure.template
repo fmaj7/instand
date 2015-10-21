@@ -1,6 +1,11 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "Instand Stack",
+  "Description": "Infrastructure stack, including resources shared by individual components/services",
+  "Parameters": {
+    "StackPrefix": {
+      "Type": "String"
+    }
+  },
   "Resources": {
     "Vpc": {
       "Type": "AWS::EC2::VPC",

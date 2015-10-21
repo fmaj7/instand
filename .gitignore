@@ -55,3 +55,6 @@ plugins/
 
 # Instand-Mobile
 instand-mobile/www/lib
+
+# Python
+*.pyc
