@@ -18,7 +18,7 @@
             "/",
             [
               {"Ref": "TemplateRootUrl"},
-              "instand_infrastructure.template"
+              "instand-infrastructure.template"
             ]
           ]
         },
@@ -37,7 +37,7 @@
             "/",
             [
               {"Ref": "TemplateRootUrl"},
-              "instand_service.template"
+              "instand-service.template"
             ]
           ]
         },
@@ -65,7 +65,7 @@
             "/",
             [
               {"Ref": "TemplateRootUrl"},
-              "instand_mobile.template"
+              "instand-mobile.template"
             ]
           ]
         },
