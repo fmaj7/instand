@@ -1,0 +1,166 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Mobile stack, contains resources only used by mobile app/server",
+  "Parameters": {
+    "Subnets": {
+      "Type": "CommaDelimitedList"
+    },
+    "StackPrefix": {
+      "Type": "String"
+    },
+    "Vpc": {
+      "Type": "AWS::EC2::VPC::Id"
+    }
+  },
+  "Resources": {
+    "MobileElb": {
+      "Type": "AWS::ElasticLoadBalancing::LoadBalancer",
+      "Properties": {
+        "Subnets": {
+          "Ref": "Subnets"
+        },
+        "LoadBalancerName": {
+          "Fn::Join": [
+            "-",
+            [
+              {"Ref": "StackPrefix"},
+              "mobile",
+              "elb"
+            ]
+          ]
+        },
+        "HealthCheck": {
+          "HealthyThreshold": "10",
+          "Interval": "30",
+          "Target": "HTTP:8100/",
+          "Timeout": "5",
+          "UnhealthyThreshold": "2"
+        },
+        "ConnectionDrainingPolicy": {
+          "Enabled": "true",
+          "Timeout": "300"
+        },
+        "ConnectionSettings": {
+          "IdleTimeout": "60"
+        },
+        "CrossZone": "true",
+        "SecurityGroups": [
+          {
+            "Ref": "ElbSecurityGroup"
+          }
+        ],
+        "Listeners": [
+          {
+            "InstancePort": "8100",
+            "LoadBalancerPort": "80",
+            "Protocol": "HTTP",
+            "InstanceProtocol": "HTTP"
+          }
+        ]
+      }
+    },
+    "ElbSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "AutoScaling-Security-Group-1",
+        "VpcId": {
+          "Ref": "Vpc"
+        }
+      }
+    },
+    "ElbSecurityGroupIngress1": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "ElbSecurityGroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "80",
+        "ToPort": "80",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ElbSecurityGroupIngress2": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "ElbSecurityGroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8080",
+        "ToPort": "8080",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ElbSecurityGroupIngress3": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "ElbSecurityGroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "22",
+        "ToPort": "22",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "ElbSecurityGroupIngress4": {
+      "Type": "AWS::EC2::SecurityGroupIngress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "ElbSecurityGroup"
+        },
+        "IpProtocol": "tcp",
+        "FromPort": "8100",
+        "ToPort": "8100",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "MobileElbSgEgress1": {
+      "Type": "AWS::EC2::SecurityGroupEgress",
+      "Properties": {
+        "GroupId": {
+          "Ref": "ElbSecurityGroup"
+        },
+        "IpProtocol": "-1",
+        "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "DynamodbSnsTopic": {
+      "Type": "AWS::SNS::Topic",
+      "Properties": {
+        "DisplayName": "dynamodb"
+      }
+    },
+    "UnhealthyHostCountHigh": {
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "ActionsEnabled": "true",
+        "AlarmDescription": "Created from EC2 Console",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "EvaluationPeriods": "3",
+        "MetricName": "UnHealthyHostCount",
+        "Namespace": "AWS/ELB",
+        "Period": "60",
+        "Statistic": "Sum",
+        "Threshold": "0.0",
+        "AlarmActions": [
+          "arn:aws:sns:us-east-1:834496413146:emails"
+        ],
+        "Dimensions": [
+          {
+            "Name": "LoadBalancerName",
+            "Value": "instand-mobile-alpha"
+          }
+        ]
+      }
+    }
+  },
+  "Outputs": {
+    "Elb" : {
+      "Value": {
+        "Ref" : "MobileElb"
+      }
+    }
+  }
+}

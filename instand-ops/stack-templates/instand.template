@@ -1,0 +1,86 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Instand Stack",
+  "Parameters": {
+    "StackPrefix": {
+      "Type": "String"
+    },
+    "TemplateRootUrl": {
+      "Type": "String"
+    }
+  },
+  "Resources": {
+    "InfrastructureStack": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Join": [
+            "/",
+            [
+              {"Ref": "TemplateRootUrl"},
+              "instand-infrastructure.template"
+            ]
+          ]
+        },
+        "Parameters": {
+          "StackPrefix": {
+            "Ref": "StackPrefix"
+          }
+        }
+      }
+    },
+    "ServiceStack": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Join": [
+            "/",
+            [
+              {"Ref": "TemplateRootUrl"},
+              "instand-service.template"
+            ]
+          ]
+        },
+        "Parameters": {
+          "Subnets": {
+            "Fn::GetAtt": ["InfrastructureStack", "Outputs.Subnets"]
+          },
+          "Vpc": {
+            "Fn::GetAtt": ["InfrastructureStack", "Outputs.Vpc"]
+          },
+          "MobileElb": {
+            "Fn::GetAtt": ["MobileStack", "Outputs.Elb"]
+          },
+          "StackPrefix": {
+            "Ref": "StackPrefix"
+          }
+        }
+      }
+    },
+    "MobileStack": {
+      "Type": "AWS::CloudFormation::Stack",
+      "Properties": {
+        "TemplateURL": {
+          "Fn::Join": [
+            "/",
+            [
+              {"Ref": "TemplateRootUrl"},
+              "instand-mobile.template"
+            ]
+          ]
+        },
+        "Parameters": {
+          "Subnets": {
+            "Fn::GetAtt": ["InfrastructureStack", "Outputs.Subnets"]
+          },
+          "Vpc": {
+            "Fn::GetAtt": ["InfrastructureStack", "Outputs.Vpc"]
+          },
+          "StackPrefix": {
+            "Ref": "StackPrefix"
+          }
+        }
+      }
+    }
+  }
+}
