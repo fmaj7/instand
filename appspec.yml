@@ -16,3 +16,7 @@ hooks:
     - location: instand-ops/codedeploy/scripts/application_start.sh
       timeout: 300
       runas: root
+  ApplicationStop:
+    - location: instand-ops/codedeploy/scripts/application_stop.sh		
+      timeout: 300		
+      runas: root
