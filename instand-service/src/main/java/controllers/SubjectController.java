@@ -39,8 +39,15 @@ public class SubjectController {
      * @return ninja result
      */
     public Result create(@NonNull CreateSubjectInput input) {
-        Subject subject = service.createSubject(input);
-        return Results.json().render(subject);
+        try {
+            Subject subject = service.createSubject(input);
+            return Results.json().render(subject);
+
+        } catch (IllegalArgumentException e) {
+            return Results.json()
+                    .status(Result.SC_400_BAD_REQUEST)
+                    .render(ErrorDescriptor.illegalArgument(e.getMessage()));
+        }
     }
 
     /**
@@ -54,9 +61,9 @@ public class SubjectController {
         if (!optSubject.isPresent()) {
             return Results.json()
                     .status(Result.SC_404_NOT_FOUND)
-                    .render(Error.notFound());
+                    .render(ErrorDescriptor.notFound());
         }
-        return Results.json().render(service.getSubject(id));
+        return Results.json().render(optSubject.get());
     }
 
     /**

@@ -18,6 +18,7 @@ package conf;
 
 
 import controllers.SubjectController;
+import controllers.UserController;
 import ninja.AssetsController;
 import ninja.Router;
 import ninja.application.ApplicationRoutes;
@@ -27,15 +28,22 @@ public class Routes implements ApplicationRoutes {
 
     @Override
     public void init(Router router) {  
-        
+
+        // Main
         router.GET().route("/").with(ApplicationController.class, "index");
         router.GET().route("/hello-world.json").with(ApplicationController.class, "helloWorldJson");
+
+        // Users
+        router.POST().route("/users").with(UserController.class, "create");
+        router.GET().route("/users/{id}").with(UserController.class, "get");
+        router.GET().route("/users/q/username/{username}").with(UserController.class, "findByUsername");
+        router.GET().route("/users/q/email-address/{emailAddress}").with(UserController.class, "findByEmailAddress");
+        router.GET().route("/users").with(UserController.class, "findAll");
 
         // Subjects
         router.POST().route("/subjects").with(SubjectController.class, "create");
         router.GET().route("/subjects/{id}").with(SubjectController.class, "get");
         router.GET().route("/subjects").with(SubjectController.class, "findAll");
-
 
         ///////////////////////////////////////////////////////////////////////
         // Assets (pictures / javascript)

@@ -7,6 +7,7 @@ import java.nio.ByteBuffer;
 import java.util.UUID;
 
 /**
+ * See also http://rentzsch.tumblr.com/post/2070061000/uuid-encoding-usability
  */
 @UtilityClass
 public final class Guid {

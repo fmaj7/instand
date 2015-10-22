@@ -26,12 +26,12 @@ public class Subject implements Entity<String> {
     Instant createdAt;
 
     /**
-     * User id who created this subject
+     * User id who created this subject.
      */
     String createdByUserId;
 
     /**
-     * Title of this subject
+     * Title of this subject.
      */
     String title;
 
