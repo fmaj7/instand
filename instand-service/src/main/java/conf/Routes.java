@@ -17,6 +17,7 @@
 package conf;
 
 
+import controllers.InterpretationController;
 import controllers.SubjectController;
 import controllers.UserController;
 import ninja.AssetsController;
@@ -44,6 +45,12 @@ public class Routes implements ApplicationRoutes {
         router.POST().route("/subjects").with(SubjectController.class, "create");
         router.GET().route("/subjects/{id}").with(SubjectController.class, "get");
         router.GET().route("/subjects").with(SubjectController.class, "findAll");
+
+        // Interpretations
+        router.POST().route("/interpretations").with(InterpretationController.class, "create");
+        router.GET().route("/interpretations/{id}").with(InterpretationController.class, "get");
+        router.GET().route("/interpretations").with(InterpretationController.class, "findAll");
+        router.GET().route("/interpretations/q/subject/{subjectId}").with(InterpretationController.class, "findByInterpretingSubjectId");
 
         ///////////////////////////////////////////////////////////////////////
         // Assets (pictures / javascript)

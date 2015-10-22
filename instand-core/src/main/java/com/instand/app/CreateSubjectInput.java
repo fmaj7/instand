@@ -2,8 +2,6 @@ package com.instand.app;
 
 import lombok.*;
 
-/**
- */
 @Data
 @Builder
 @NoArgsConstructor

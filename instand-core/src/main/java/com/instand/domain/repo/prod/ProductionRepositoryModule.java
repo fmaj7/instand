@@ -2,11 +2,11 @@ package com.instand.domain.repo.prod;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
-import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+import com.instand.domain.repo.InterpretationRepository;
 import com.instand.domain.repo.SubjectRepository;
 import com.instand.domain.repo.UserRepository;
 
@@ -17,8 +17,9 @@ public class ProductionRepositoryModule extends AbstractModule {
 
     @Override
     protected void configure() {
-        bind(SubjectRepository.class).to(DynamoSubjectRepository.class);
         bind(UserRepository.class).to(DynamoUserRepository.class);
+        bind(SubjectRepository.class).to(DynamoSubjectRepository.class);
+        bind(InterpretationRepository.class).to(DynamoInterpretationRepository.class);
     }
 
     @Provides

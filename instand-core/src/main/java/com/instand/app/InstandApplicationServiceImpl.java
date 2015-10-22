@@ -2,12 +2,11 @@ package com.instand.app;
 
 import com.google.inject.Inject;
 import com.instand.common.util.Guid;
+import com.instand.domain.Interpretation;
 import com.instand.domain.Subject;
 import com.instand.domain.User;
 import com.instand.domain.UserAccount;
-import com.instand.domain.repo.EntityAlreadyExistsException;
-import com.instand.domain.repo.SubjectRepository;
-import com.instand.domain.repo.UserRepository;
+import com.instand.domain.repo.*;
 import lombok.RequiredArgsConstructor;
 
 import java.time.Instant;
@@ -27,6 +26,9 @@ public class InstandApplicationServiceImpl implements InstandApplicationService 
 
     @Inject
     private final SubjectRepository subjectRepo;
+
+    @Inject
+    private final InterpretationRepository interpretationRepo;
 
     /**
      * {@inheritDoc}
@@ -131,7 +133,73 @@ public class InstandApplicationServiceImpl implements InstandApplicationService 
      * {@inheritDoc}
      */
     @Override
+    public boolean existsSubject(String id) {
+        return subjectRepo.exists(id);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public List<Subject> findAllSubjects() {
         return subjectRepo.findAll();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Interpretation createInterpretation(CreateInterpretationInput input) {
+        String createdByUserId = input.getCreatedByUserId();
+        if (!existsUser(createdByUserId)) {
+            String msg = String.format("Cannot find user with createdByUserId %s", createdByUserId);
+            throw new IllegalArgumentException(msg);
+        }
+        String interpretingSubjectId = input.getInterpretingSubjectId();
+        if (!existsSubject(interpretingSubjectId)) {
+            String msg = String.format("Cannot find subject with interpretingSubjectId %s", interpretingSubjectId);
+            throw new IllegalArgumentException(msg);
+        }
+
+        Instant now = Instant.now();
+        Interpretation interpretation = Interpretation.builder()
+                .id(Guid.randomBase32())
+                .createdAt(now)
+                .updatedAt(now)
+                .createdByUserId(createdByUserId)
+                .interpretingSubjectId(interpretingSubjectId)
+                .content(input.getContent())
+                .imageUri(input.getImageUri())
+                .build();
+        interpretationRepo.create(interpretation);
+        return interpretation;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Optional<Interpretation> getInterpretation(String interpretationId) {
+        return interpretationRepo.find(interpretationId);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Interpretation> findAllInterpretations() {
+        return interpretationRepo.findAll();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<Interpretation> findByInterpretingSubjectId(String subjectId) {
+        if (!subjectRepo.exists(subjectId)) {
+            String msg = format("Subject with id [%s] does not exist", subjectId);
+            throw new EntityNotFoundException(msg);
+        }
+        return interpretationRepo.findByInterpretingSubjectId(subjectId);
     }
 }

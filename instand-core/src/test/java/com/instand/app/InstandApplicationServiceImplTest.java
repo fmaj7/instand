@@ -2,6 +2,7 @@ package com.instand.app;
 
 import com.instand.domain.User;
 import com.instand.domain.repo.EntityAlreadyExistsException;
+import com.instand.domain.repo.InterpretationRepository;
 import com.instand.domain.repo.SubjectRepository;
 import com.instand.domain.repo.UserRepository;
 import org.junit.Before;
@@ -30,12 +31,15 @@ public class InstandApplicationServiceImplTest {
     @Mock
     SubjectRepository subjectRepository;
 
+    @Mock
+    InterpretationRepository interpretationRepository;
 
     InstandApplicationServiceImpl applicationService;
 
     @Before
     public void setup() {
-        applicationService = new InstandApplicationServiceImpl(userRepository, subjectRepository);
+        applicationService = new InstandApplicationServiceImpl(
+                userRepository, subjectRepository, interpretationRepository);
     }
 
     @Test
@@ -75,11 +79,6 @@ public class InstandApplicationServiceImplTest {
                 .build();
         when(userRepository.containsUsername("foo")).thenReturn(true);
         applicationService.createUser(input);
-    }
-
-    @Test
-    public void testAuthenticateUser() throws Exception {
-
     }
 
     @Test
