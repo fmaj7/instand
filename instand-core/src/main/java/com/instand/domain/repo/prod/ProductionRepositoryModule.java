@@ -1,6 +1,7 @@
 package com.instand.domain.repo.prod;
 
 import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.google.inject.AbstractModule;
@@ -23,7 +24,7 @@ public class ProductionRepositoryModule extends AbstractModule {
     @Provides
     @Singleton
     public AWSCredentialsProvider awsCredentialsProvider() {
-        return new ProfileCredentialsProvider();
+        return new DefaultAWSCredentialsProviderChain();
     }
 
     @Provides
