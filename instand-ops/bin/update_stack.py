@@ -7,11 +7,13 @@ from stack_utilities import wait_until_stack_succeeds, get_template_root_url, ge
     upload_template_to_s3
 
 
-def create_cloud_formation_stack(stack_name):
+def update_stack(stack_name):
+    upload_template_to_s3(stack_name)
     cfn_client = boto3.client("cloudformation")
-    response = cfn_client.create_stack(
+    response = cfn_client.update_stack(
         StackName=stack_name,
         TemplateURL=get_template_url(stack_name),
+        UsePreviousTemplate=False,
         Parameters=[
             {
                 'ParameterKey': 'StackPrefix',
@@ -24,8 +26,7 @@ def create_cloud_formation_stack(stack_name):
         ],
         Capabilities=[
             'CAPABILITY_IAM',
-        ],
-        OnFailure='DO_NOTHING',
+        ]
     )
     if response['ResponseMetadata']['HTTPStatusCode'] == 200:
         wait_until_stack_succeeds(cfn_client, stack_name)
@@ -33,16 +34,11 @@ def create_cloud_formation_stack(stack_name):
         print "Stack failed to create. Response {}".format(response)
 
 
-def create_stack(stack_name):
-    upload_template_to_s3(stack_name)
-    create_cloud_formation_stack(stack_name)
-
-
 def main():
     parser = argparse.ArgumentParser()
     add_args(parser)
     arguments = parser.parse_args()
-    create_stack(arguments.stack_name)
+    update_stack(arguments.stack_name)
 
 
 if __name__ == '__main__':

@@ -138,7 +138,24 @@
               "VolumeSize": 8
             }
           }
-        ]
+        ],
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join": [
+              "",
+              [
+                "#!/bin/bash\n",
+                "yum -y update\n",
+                "yum install -y ruby\n",
+                "yum install -y aws-cli\n",
+                "cd /home/ec2-user\n",
+                "aws s3 cp s3://aws-codedeploy-us-east-1/latest/install . --region us-east-1\n",
+                "chmod +x ./install\n",
+                "./install auto"
+              ]
+            ]
+          }
+        }
       }
     },
     "Elb": {
@@ -439,7 +456,10 @@
           }
         ],
         "ServiceRoleArn": {
-          "Fn::GetAtt" : ["CodeDeployServiceRole", "Arn"]
+          "Fn::GetAtt": [
+            "CodeDeployServiceRole",
+            "Arn"
+          ]
         }
       }
     },
