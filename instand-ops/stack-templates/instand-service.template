@@ -224,6 +224,17 @@
         "ProvisionedThroughput": {
           "ReadCapacityUnits": "1",
           "WriteCapacityUnits": "1"
+        },
+        "TableName": {
+          "Fn::Join": [
+            "-",
+            [
+              {
+                "Ref": "StackPrefix"
+              },
+              "subject"
+            ]
+          ]
         }
       }
     },
@@ -287,7 +298,18 @@
               "WriteCapacityUnits": "1"
             }
           }
-        ]
+        ],
+        "TableName": {
+          "Fn::Join": [
+            "-",
+            [
+              {
+                "Ref": "StackPrefix"
+              },
+              "user"
+            ]
+          ]
+        }
       }
     },
     "ElbSecurityGroup": {
