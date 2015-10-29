@@ -7,5 +7,5 @@ if [[ "$JAVA_VER" -ge 18 ]]; then
 else
     echo "java is too old, reinstalling Java 8"
     yum remove java-1.7.0-openjdk
-    yum install java-1.8.0
+    yum -y install java-1.8.0
 fi
