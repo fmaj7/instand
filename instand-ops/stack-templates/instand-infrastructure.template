@@ -56,11 +56,6 @@
         }
       }
     },
-    "Igw": {
-      "Type": "AWS::EC2::InternetGateway",
-      "Properties": {
-      }
-    },
     "Dopt": {
       "Type": "AWS::EC2::DHCPOptions",
       "Properties": {
@@ -81,6 +76,11 @@
         }
       }
     },
+    "Igw": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+      }
+    },
     "VpcGatewayAttachment": {
       "Type": "AWS::EC2::VPCGatewayAttachment",
       "Properties": {
@@ -89,6 +89,14 @@
         },
         "InternetGatewayId": {
           "Ref": "Igw"
+        }
+      }
+    },
+    "RouteTable": {
+      "Type": "AWS::EC2::RouteTable",
+      "Properties": {
+        "VpcId": {
+          "Ref": "Vpc"
         }
       }
     },
@@ -103,7 +111,11 @@
           "Ref": "Igw"
         }
       },
-      "DependsOn": "VpcGatewayAttachment"
+      "DependsOn": [
+        "VpcGatewayAttachment",
+        "RouteTable",
+        "Igw"
+      ]
     },
     "Acl": {
       "Type": "AWS::EC2::NetworkAcl",
@@ -180,14 +192,6 @@
         },
         "SubnetId": {
           "Ref": "Subnet4"
-        }
-      }
-    },
-    "RouteTable": {
-      "Type": "AWS::EC2::RouteTable",
-      "Properties": {
-        "VpcId": {
-          "Ref": "Vpc"
         }
       }
     }
