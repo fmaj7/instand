@@ -21,5 +21,5 @@ public class CreateInterpretationInput {
 
     String content;
 
-    Optional<URI> imageUri;
+    String imageUri;
 }

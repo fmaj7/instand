@@ -9,6 +9,7 @@ import com.instand.domain.UserAccount;
 import com.instand.domain.repo.*;
 import lombok.RequiredArgsConstructor;
 
+import java.net.URI;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
@@ -169,7 +170,7 @@ public class InstandApplicationServiceImpl implements InstandApplicationService 
                 .createdByUserId(createdByUserId)
                 .interpretingSubjectId(interpretingSubjectId)
                 .content(input.getContent())
-                .imageUri(input.getImageUri())
+                .imageUri(Optional.ofNullable(input.getImageUri() != null ? URI.create(input.getImageUri()) : null))
                 .build();
         interpretationRepo.create(interpretation);
         return interpretation;

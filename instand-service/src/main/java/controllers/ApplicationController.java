@@ -28,7 +28,11 @@ public class ApplicationController {
     public Result index() {
         return Results.html();
     }
-    
+
+    public Result scaffold() {
+        return Results.html();
+    }
+
     public Result helloWorldJson() {
         SimplePojo simplePojo = new SimplePojo();
         simplePojo.content = "JSON is working!";
