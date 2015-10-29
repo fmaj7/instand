@@ -206,6 +206,60 @@
         ]
       }
     },
+    "Interpretation": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "interpretingSubjectId",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": "1",
+          "WriteCapacityUnits": "1"
+        },
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "interpretingSubjectId-index",
+            "KeySchema": [
+              {
+                "AttributeName": "interpretingSubjectId",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            },
+            "ProvisionedThroughput": {
+              "ReadCapacityUnits": "1",
+              "WriteCapacityUnits": "1"
+            }
+          }
+        ],
+        "TableName": {
+          "Fn::Join": [
+            "-",
+            [
+              {
+                "Ref": "StackPrefix"
+              },
+              "interpretation"
+            ]
+          ]
+        }
+      }
+    },
     "Subject": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
