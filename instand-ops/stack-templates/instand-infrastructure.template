@@ -26,6 +26,17 @@
         }
       }
     },
+    "Subnet1RouteTable": {
+      "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties" : {
+        "RouteTableId" : {
+          "Ref": "RouteTable"
+        },
+        "SubnetId" : {
+          "Ref": "Subnet1"
+        }
+      }
+    },
     "Subnet2": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
@@ -33,6 +44,17 @@
         "AvailabilityZone": "us-east-1a",
         "VpcId": {
           "Ref": "Vpc"
+        }
+      }
+    },
+    "Subnet2RouteTable": {
+      "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties" : {
+        "RouteTableId" : {
+          "Ref": "RouteTable"
+        },
+        "SubnetId" : {
+          "Ref": "Subnet2"
         }
       }
     },
@@ -46,6 +68,17 @@
         }
       }
     },
+    "Subnet3RouteTable": {
+      "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties" : {
+        "RouteTableId" : {
+          "Ref": "RouteTable"
+        },
+        "SubnetId" : {
+          "Ref": "Subnet3"
+        }
+      }
+    },
     "Subnet4": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
@@ -53,6 +86,17 @@
         "AvailabilityZone": "us-east-1b",
         "VpcId": {
           "Ref": "Vpc"
+        }
+      }
+    },
+    "Subnet4RouteTable": {
+      "Type" : "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties" : {
+        "RouteTableId" : {
+          "Ref": "RouteTable"
+        },
+        "SubnetId" : {
+          "Ref": "Subnet4"
         }
       }
     },
@@ -111,11 +155,7 @@
           "Ref": "Igw"
         }
       },
-      "DependsOn": [
-        "VpcGatewayAttachment",
-        "RouteTable",
-        "Igw"
-      ]
+      "DependsOn": "VpcGatewayAttachment"
     },
     "Acl": {
       "Type": "AWS::EC2::NetworkAcl",
