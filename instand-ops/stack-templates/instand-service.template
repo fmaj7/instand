@@ -138,7 +138,24 @@
               "VolumeSize": 8
             }
           }
-        ]
+        ],
+        "UserData": {
+          "Fn::Base64": {
+            "Fn::Join": [
+              "",
+              [
+                "#!/bin/bash\n",
+                "yum -y update\n",
+                "yum install -y ruby\n",
+                "yum install -y aws-cli\n",
+                "cd /home/ec2-user\n",
+                "aws s3 cp s3://aws-codedeploy-us-east-1/latest/install . --region us-east-1\n",
+                "chmod +x ./install\n",
+                "./install auto"
+              ]
+            ]
+          }
+        }
       }
     },
     "Elb": {
@@ -151,7 +168,9 @@
           "Fn::Join": [
             "-",
             [
-              {"Ref": "StackPrefix"},
+              {
+                "Ref": "StackPrefix"
+              },
               "service",
               "elb"
             ]
@@ -205,6 +224,17 @@
         "ProvisionedThroughput": {
           "ReadCapacityUnits": "1",
           "WriteCapacityUnits": "1"
+        },
+        "TableName": {
+          "Fn::Join": [
+            "-",
+            [
+              {
+                "Ref": "StackPrefix"
+              },
+              "subject"
+            ]
+          ]
         }
       }
     },
@@ -268,7 +298,18 @@
               "WriteCapacityUnits": "1"
             }
           }
-        ]
+        ],
+        "TableName": {
+          "Fn::Join": [
+            "-",
+            [
+              {
+                "Ref": "StackPrefix"
+              },
+              "user"
+            ]
+          ]
+        }
       }
     },
     "ElbSecurityGroup": {
@@ -336,6 +377,112 @@
         },
         "IpProtocol": "-1",
         "CidrIp": "0.0.0.0/0"
+      }
+    },
+    "CodeDeployServiceRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "codedeploy.us-east-1.amazonaws.com",
+                  "codedeploy.ap-northeast-1.amazonaws.com",
+                  "codedeploy.eu-west-1.amazonaws.com",
+                  "codedeploy.us-west-2.amazonaws.com",
+                  "codedeploy.ap-southeast-2.amazonaws.com"
+                ]
+              },
+              "Action": "sts:AssumeRole"
+            }
+          ]
+        },
+        "Path": "/",
+        "Policies": [
+          {
+            "PolicyName": "AWSCodeDeployRole",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "autoscaling:CompleteLifecycleAction",
+                    "autoscaling:DeleteLifecycleHook",
+                    "autoscaling:DescribeAutoScalingGroups",
+                    "autoscaling:DescribeLifecycleHooks",
+                    "autoscaling:PutLifecycleHook",
+                    "autoscaling:RecordLifecycleActionHeartbeat",
+                    "ec2:DescribeInstances",
+                    "ec2:DescribeInstanceStatus",
+                    "tag:GetTags",
+                    "tag:GetResources"
+                  ],
+                  "Resource": "*"
+                }
+              ]
+            }
+          },
+          {
+            "PolicyName": "AmazonS3ReadOnlyAccess",
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "s3:Get*",
+                    "s3:List*"
+                  ],
+                  "Resource": "*"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
+    "CircleCi": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "AccessControl": "Private",
+        "VersioningConfiguration": {
+          "Status": "Enabled"
+        }
+      }
+    },
+    "InstandApplication": {
+      "Type": "AWS::CodeDeploy::Application"
+    },
+    "ThirtyThreePercentAtATime": {
+      "Type": "AWS::CodeDeploy::DeploymentConfig",
+      "Properties": {
+        "MinimumHealthyHosts": {
+          "Type": "FLEET_PERCENT",
+          "Value": "33"
+        }
+      }
+    },
+    "DeploymentGroup": {
+      "Type": "AWS::CodeDeploy::DeploymentGroup",
+      "Properties": {
+        "ApplicationName": {
+          "Ref": "InstandApplication"
+        },
+        "AutoScalingGroups": [
+          {
+            "Ref": "ServiceAsg"
+          }
+        ],
+        "ServiceRoleArn": {
+          "Fn::GetAtt": [
+            "CodeDeployServiceRole",
+            "Arn"
+          ]
+        }
       }
     },
     "DynamodbSnsTopic": {
