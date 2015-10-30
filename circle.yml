@@ -19,6 +19,6 @@ deployment:
         revision_location:
           revision_type: S3
           s3_location:
-            bucket: com.instand.circleci
+            bucket: alpha-servicestack-1namj0225dh9h-circleci-tdu0saa0hjp5
             key_pattern: instand-{BRANCH}-{SHORT_COMMIT}-{BUILD_NUM}
-        deployment_group: instand-dg
+        deployment_group: alpha-ServiceStack-1NAMJ0225DH9H-DeploymentGroup-1BM230RIMN4NY
