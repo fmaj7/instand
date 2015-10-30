@@ -13,7 +13,7 @@ deployment:
   staging:
     branch: master
     codedeploy:
-      instand:
+      alpha-ServiceStack-1NAMJ0225DH9H-InstandApplication-CJDOUEORTUHL:
         application_root: /
         region: us-east-1
         revision_location:
