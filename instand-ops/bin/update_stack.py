@@ -4,7 +4,7 @@ import argparse
 import boto3
 
 from stack_utilities import wait_until_stack_succeeds, get_template_root_url, get_template_url, add_args, \
-    upload_template_to_s3
+    upload_template_to_s3, print_stack
 
 
 def update_stack(stack_name):
@@ -30,6 +30,7 @@ def update_stack(stack_name):
     )
     if response['ResponseMetadata']['HTTPStatusCode'] == 200:
         wait_until_stack_succeeds(cfn_client, stack_name)
+        print_stack(cfn_client, stack_name)
     else:
         print "Stack failed to create. Response {}".format(response)
 

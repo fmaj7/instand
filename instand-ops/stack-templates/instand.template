@@ -82,5 +82,15 @@
         }
       }
     }
+  },
+  "Outputs": {
+    "CircleCiKeys": {
+      "Value": {
+        "Fn::GetAtt": [
+          "ServiceStack",
+          "Outputs.CircleCiUserKeys"
+        ]
+      }
+    }
   }
 }

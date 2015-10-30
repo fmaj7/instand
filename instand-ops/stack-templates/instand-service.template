@@ -508,6 +508,12 @@
         }
       }
     },
+    "CircleCiUserKeys" : {
+      "Type" : "AWS::IAM::AccessKey",
+      "Properties" : {
+        "UserName" : { "Ref" : "CircleCiUser" }
+      }
+    },
     "CircleCiUser": {
       "Type": "AWS::IAM::User",
       "Properties": {
@@ -908,6 +914,17 @@
     "Elb": {
       "Value": {
         "Ref": "Elb"
+      }
+    },
+    "CircleCiUserKeys": {
+      "Value": {
+        "Fn::Join": [
+          ":",
+          [
+            { "Ref" : "CircleCiUserKeys" },
+            { "Fn::GetAtt" : [ "CircleCiUserKeys", "SecretAccessKey" ] }
+          ]
+        ]
       }
     }
   }

@@ -2,6 +2,7 @@
 import os
 import glob
 import inspect
+import pprint
 
 import boto3
 
@@ -68,3 +69,10 @@ def wait_until_stack_succeeds(cfn_client, stack_name):
         action_msg_ed = "created"
     wait_until_true("{} stack".format(action_msg_ing), has_stack_action_successfully_completed(cfn_client, stack_name))
     print "Stack {} has been {}.".format(stack_name, action_msg_ed)
+
+
+def print_stack(cfn_client, stack_name):
+    describe_response = cfn_client.describe_stacks(
+        StackName=stack_name
+    )
+    pprint.pprint(describe_response['Stacks'][0]['Outputs'])
