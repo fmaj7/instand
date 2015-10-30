@@ -626,6 +626,42 @@
                           { "Ref" : "ThirtyThreePercentAtATime" }
                         ]
                       ]
+                    },
+                    {
+                      "Fn::Join": [
+                        ":",
+                        [
+                          "arn:aws:codedeploy",
+                          { "Ref" : "AWS::Region" },
+                          { "Ref" : "AWS::AccountId" },
+                          "deploymentconfig",
+                          "CodeDeployDefault.OneAtATime"
+                        ]
+                      ]
+                    },
+                    {
+                      "Fn::Join": [
+                        ":",
+                        [
+                          "arn:aws:codedeploy",
+                          { "Ref" : "AWS::Region" },
+                          { "Ref" : "AWS::AccountId" },
+                          "deploymentconfig",
+                          "CodeDeployDefault.HalfAtATime"
+                        ]
+                      ]
+                    },
+                    {
+                      "Fn::Join": [
+                        ":",
+                        [
+                          "arn:aws:codedeploy",
+                          { "Ref" : "AWS::Region" },
+                          { "Ref" : "AWS::AccountId" },
+                          "deploymentconfig",
+                          "CodeDeployDefault.AllAtOnce"
+                        ]
+                      ]
                     }
                   ]
                 }
