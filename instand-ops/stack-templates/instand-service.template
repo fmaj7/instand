@@ -599,8 +599,8 @@
                             "Fn::Join" : [
                               "/",
                               [
-                                { "Ref" : "DeploymentGroup" },
-                                "*"
+                                { "Ref" : "InstandApplication" },
+                                { "Ref" : "DeploymentGroup" }
                               ]
                             ]
                           }
