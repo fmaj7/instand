@@ -532,7 +532,23 @@
                     "s3:PutObject"
                   ],
                   "Resource": [
-                    "arn:aws:s3:::com.instand.circleci/*"
+                    {
+                      "Fn::Join": [
+                        ":",
+                        [
+                          "arn:aws:s3::",
+                          {
+                            "Fn::Join" : [
+                              "/",
+                              [
+                                { "Ref" : "CircleCi" },
+                                "*"
+                              ]
+                            ]
+                          }
+                        ]
+                      ]
+                    }
                   ]
                 }
               ]
