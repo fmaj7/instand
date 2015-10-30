@@ -508,6 +508,117 @@
         }
       }
     },
+    "CircleCiUserKeys" : {
+      "Type" : "AWS::IAM::AccessKey",
+      "Properties" : {
+        "UserName" : { "Ref" : "CircleCiUser" }
+      }
+    },
+    "CircleCiUser": {
+      "Type": "AWS::IAM::User",
+      "Properties": {
+        "ManagedPolicyArns": [
+
+        ],
+        "Policies": [
+          {
+            "PolicyName" : "circleci-s3",
+            "PolicyDocument" : {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "s3:PutObject"
+                  ],
+                  "Resource": [
+                    "arn:aws:s3:::com.instand.circleci/*"
+                  ]
+                }
+              ]
+            }
+          },
+          {
+            "PolicyName" : "circleci-codedeploy",
+            "PolicyDocument" : {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "codedeploy:RegisterApplicationRevision",
+                    "codedeploy:GetApplicationRevision"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Join": [
+                        ":",
+                        [
+                          "arn:aws:codedeploy",
+                          { "Ref" : "AWS::Region" },
+                          { "Ref" : "AWS::AccountId" },
+                          "application",
+                          { "Ref" : "InstandApplication" }
+                        ]
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "codedeploy:CreateDeployment",
+                    "codedeploy:GetDeployment"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Join": [
+                        ":",
+                        [
+                          "arn:aws:codedeploy",
+                          { "Ref" : "AWS::Region" },
+                          { "Ref" : "AWS::AccountId" },
+                          "deploymentgroup",
+                          {
+                            "Fn::Join" : [
+                              "/",
+                              [
+                                { "Ref" : "DeploymentGroup" },
+                                "*"
+                              ]
+                            ]
+                          }
+                        ]
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "codedeploy:GetDeploymentConfig"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Join": [
+                        ":",
+                        [
+                          "arn:aws:codedeploy",
+                          { "Ref" : "AWS::Region" },
+                          { "Ref" : "AWS::AccountId" },
+                          "deploymentconfig",
+                          { "Ref" : "ThirtyThreePercentAtATime" }
+                        ]
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          }
+        ]
+      }
+    },
     "InstandApplication": {
       "Type": "AWS::CodeDeploy::Application"
     },
@@ -803,6 +914,17 @@
     "Elb": {
       "Value": {
         "Ref": "Elb"
+      }
+    },
+    "CircleCiUserKeys": {
+      "Value": {
+        "Fn::Join": [
+          ":",
+          [
+            { "Ref" : "CircleCiUserKeys" },
+            { "Fn::GetAtt" : [ "CircleCiUserKeys", "SecretAccessKey" ] }
+          ]
+        ]
       }
     }
   }
