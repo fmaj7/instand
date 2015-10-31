@@ -9,6 +9,3 @@ http://alpha-mobile-elb-111734157.us-east-1.elb.amazonaws.com/
 ## Service
 ###Scaffolding Page
 http://alpha-service-elb-654423919.us-east-1.elb.amazonaws.com/scaffold
-
-## To Be Deprecated
-http://instand-service-alpha-1892908874.us-east-1.elb.amazonaws.com/scaffold
