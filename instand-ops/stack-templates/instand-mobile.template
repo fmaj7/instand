@@ -62,7 +62,7 @@
     "ElbSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
-        "GroupDescription": "AutoScaling-Security-Group-1",
+        "GroupDescription": "Mobile ELB Security Group",
         "VpcId": {
           "Ref": "Vpc"
         }
