@@ -1,0 +1,35 @@
+<#import "../layout/defaultLayout.ftl.html" as layout>
+    <@layout.myLayout "Config">
+
+    <h1>Config</h1>
+    <hr/>
+
+    <section>
+        <h2>All ninja properties</h2>
+        <ul>
+            <#list ninaProperties?keys as key>
+                <li><code>${key}</code> = <code>${ninaProperties[key]}</code></li>
+            </#list>
+        </ul>
+    </section>
+
+    <section>
+        <h2>Framework active properties</h2>
+        <dl>
+            <dt>mode</dt>
+            <dl><code>${mode}</code></dl>
+
+            <dt>application name</dt>
+            <dl><code>${applicationName}</code></dl>
+        </dl>
+    </section>
+
+    <section>
+        <h2>Our active properties</h2>
+        <dl>
+            <dt>stage</dt>
+            <dl><code>${stage}</code></dl>
+        </dl>
+    </section>
+
+</@layout.myLayout>
