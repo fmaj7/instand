@@ -5,6 +5,7 @@ import com.google.inject.Singleton;
 import com.instand.app.InstandApplicationService;
 import com.instand.app.CreateSubjectInput;
 import com.instand.domain.Subject;
+import conf.CorsFilter;
 import lombok.NonNull;
 import ninja.BasicAuthFilter;
 import ninja.FilterWith;
@@ -19,7 +20,7 @@ import java.util.Optional;
  * Controller of subjects.
  */
 @Singleton
-@FilterWith(BasicAuthFilter.class)
+@FilterWith({CorsFilter.class})
 public class SubjectController {
 
     /**
@@ -72,6 +73,7 @@ public class SubjectController {
      * @return ninja result
      */
     public Result findAll() {
+
         List<Subject> subjects = service.findAllSubjects();
         return Results.json()
                 .render(subjects);

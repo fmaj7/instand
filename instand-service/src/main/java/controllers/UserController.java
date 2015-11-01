@@ -7,6 +7,7 @@ import com.instand.app.InstandApplicationService;
 import com.instand.domain.User;
 import com.instand.domain.UserDescriptor;
 import com.instand.domain.repo.EntityAlreadyExistsException;
+import conf.CorsFilter;
 import lombok.NonNull;
 import ninja.BasicAuthFilter;
 import ninja.FilterWith;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
  * Controller of users.
  */
 @Singleton
-@FilterWith(BasicAuthFilter.class)
+@FilterWith({CorsFilter.class})
 public class UserController {
 
     /**

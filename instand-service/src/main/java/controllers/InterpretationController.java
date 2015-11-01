@@ -8,6 +8,7 @@ import com.instand.app.InstandApplicationService;
 import com.instand.domain.Interpretation;
 import com.instand.domain.Subject;
 import com.instand.domain.repo.EntityNotFoundException;
+import conf.CorsFilter;
 import lombok.NonNull;
 import ninja.BasicAuthFilter;
 import ninja.FilterWith;
@@ -22,7 +23,7 @@ import java.util.Optional;
  * Controller of interpretations.
  */
 @Singleton
-@FilterWith(BasicAuthFilter.class)
+@FilterWith({CorsFilter.class})
 public class InterpretationController {
 
     /**
