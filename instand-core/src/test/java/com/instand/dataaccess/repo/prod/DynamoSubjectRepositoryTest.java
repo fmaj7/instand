@@ -1,4 +1,4 @@
-package com.instand.domain.repo.prod;
+package com.instand.dataaccess.repo.prod;
 
 import org.junit.Test;
 

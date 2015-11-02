@@ -18,6 +18,7 @@ package controllers;
 
 import com.google.common.collect.ImmutableSortedMap;
 import com.google.common.collect.Maps;
+import conf.Constants;
 import ninja.BasicAuthFilter;
 import ninja.FilterWith;
 import ninja.Result;
@@ -56,7 +57,7 @@ public class ApplicationController {
         result.render("applicationName", ninjaProperties.get(NinjaConstant.applicationName));
 
         // only our active properties
-        result.render("stage", ninjaProperties.get("stage"));
+        result.render("stage", ninjaProperties.get(Constants.STAGE_KEY_NAME));
 
         return result;
     }

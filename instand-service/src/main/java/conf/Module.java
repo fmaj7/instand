@@ -17,8 +17,14 @@
 package conf;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import com.instand.app.ApplicationServiceModule;
+import com.instand.common.env.EnvironmentContext;
+import com.instand.common.env.Stage;
+import ninja.utils.NinjaProperties;
+
+import javax.inject.Inject;
 
 @Singleton
 public class Module extends AbstractModule {
@@ -27,6 +33,18 @@ public class Module extends AbstractModule {
         install(new ApplicationServiceModule());
         install(new BasicAuthModule());
         bind(StartupActions.class);
+    }
+
+    @Provides
+    @Singleton
+    Stage stage(NinjaProperties ninjaProperties) {
+        return Stage.ofId(ninjaProperties.get(Constants.STAGE_KEY_NAME));
+    }
+
+    @Provides
+    @Singleton
+    EnvironmentContext environmentContext(Stage stage) {
+        return EnvironmentContext.builder().stage(stage).build();
     }
 
 }

@@ -1,9 +1,10 @@
-package com.instand.domain.repo.prod;
+package com.instand.dataaccess.repo.prod;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.document.*;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.instand.common.env.EnvironmentContext;
 import com.instand.common.jackson.JacksonMapper;
 import com.instand.domain.User;
 import com.instand.domain.repo.EntityAlreadyExistsException;
@@ -21,7 +22,9 @@ public class DynamoUserRepository implements UserRepository {
     public static final String USERNAME_ATTR_NAME = "username";
     public static final String EMAIL_ADDRESS_ATTR_NAME = "emailAddress";
     public static final String DOC_ATTR_NAME = "document";
-    public static final String TABLE_NAME = "na-alpha-user";
+
+    @NonNull
+    private final EnvironmentContext ec;
 
     @NonNull
     private final AmazonDynamoDBClient client;
@@ -173,8 +176,11 @@ public class DynamoUserRepository implements UserRepository {
     }
 
     private Table getTable(DynamoDB ddb) {
-        // TODO construct table name using runtime region and stage data
-        return ddb.getTable(TABLE_NAME);
+        return ddb.getTable(resolveTableName());
+    }
+
+    private String resolveTableName() {
+        return String.format("%s-user", this.ec.getStage().getId());
     }
 
 }
