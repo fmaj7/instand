@@ -1,30 +1,31 @@
-package com.instand.domain.repo.prod;
+package com.instand.dataaccess.repo.prod;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.document.*;
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
+import com.instand.common.env.EnvironmentContext;
 import com.instand.common.jackson.JacksonMapper;
-import com.instand.domain.Interpretation;
-import com.instand.domain.repo.InterpretationRepository;
+import com.instand.domain.Subject;
+import com.instand.domain.repo.SubjectRepository;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
- * DynamoDB implementation of {@link InterpretationRepository}.
+ * DynamoDB implementation of {@link SubjectRepository}.
  */
 @RequiredArgsConstructor(onConstructor = @__(@Inject))
-public class DynamoInterpretationRepository implements InterpretationRepository {
+public class DynamoSubjectRepository implements SubjectRepository {
 
     public static final String ID_ATTR_NAME = "id";
     public static final String CREATED_BY_USER_ID_ATTR_NAME = "createdByUserId";
-    public static final String INTERPRETING_SUBJECT_ID_ATTR_NAME = "interpretingSubjectId";
     public static final String DOC_ATTR_NAME = "document";
-    public static final String TABLE_NAME = "na-alpha-interpretation";
+
+    @NonNull
+    private final EnvironmentContext ec;
 
     @NonNull
     private final AmazonDynamoDBClient client;
@@ -36,14 +37,13 @@ public class DynamoInterpretationRepository implements InterpretationRepository 
      * {@inheritDoc}
      */
     @Override
-    public Interpretation create(@NonNull Interpretation entity) {
+    public Subject create(@NonNull Subject entity) {
         String json = jm.serializer().serialize(entity);
         DynamoDB ddb = new DynamoDB(client);
         Table table = getTable(ddb);
         Item item = new Item()
                 .withPrimaryKey(ID_ATTR_NAME, entity.getId())
                 .withString(CREATED_BY_USER_ID_ATTR_NAME, entity.getCreatedByUserId())
-                .withString(INTERPRETING_SUBJECT_ID_ATTR_NAME, entity.getInterpretingSubjectId())
                 .withJSON(DOC_ATTR_NAME, json);
         table.putItem(item);
         return entity;
@@ -53,7 +53,7 @@ public class DynamoInterpretationRepository implements InterpretationRepository 
      * {@inheritDoc}
      */
     @Override
-    public Optional<Interpretation> find(@NonNull String id) {
+    public Optional<Subject> find(@NonNull String id) {
         DynamoDB ddb = new DynamoDB(client);
         Table table = getTable(ddb);
         Item item = table.getItem(ID_ATTR_NAME, id);
@@ -61,21 +61,21 @@ public class DynamoInterpretationRepository implements InterpretationRepository 
             return Optional.empty();
         }
         String json = item.getJSON(DOC_ATTR_NAME);
-        return Optional.ofNullable(jm.deserializer(Interpretation.class).deserialize(json));
+        return Optional.ofNullable(jm.deserializer(Subject.class).deserialize(json));
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public List<Interpretation> findAll() {
+    public List<Subject> findAll() {
         DynamoDB ddb = new DynamoDB(client);
         Table table = getTable(ddb);
         ItemCollection<ScanOutcome> items = table.scan();
-        List<Interpretation> results = Lists.newArrayList();
+        List<Subject> results = Lists.newArrayList();
         for (Item item : items) {
             String json = item.getJSON(DOC_ATTR_NAME);
-            Interpretation s = jm.deserializer(Interpretation.class).deserialize(json);
+            Subject s = jm.deserializer(Subject.class).deserialize(json);
             results.add(s);
         }
         return results;
@@ -85,26 +85,7 @@ public class DynamoInterpretationRepository implements InterpretationRepository 
      * {@inheritDoc}
      */
     @Override
-    public List<Interpretation> findByInterpretingSubjectId(String subjectId) {
-        DynamoDB ddb = new DynamoDB(client);
-        Table table = getTable(ddb);
-        Index index = table.getIndex("interpretingSubjectId-index");
-        ItemCollection<QueryOutcome> queryResult = index.query("interpretingSubjectId", subjectId);
-        List<Item> items = Lists.newArrayList(queryResult.iterator());
-        List<Interpretation> results = Lists.newArrayList();
-        for (Item item : items) {
-            String json = item.getJSON(DOC_ATTR_NAME);
-            Interpretation s = jm.deserializer(Interpretation.class).deserialize(json);
-            results.add(s);
-        }
-        return results;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void update(@NonNull Interpretation entity) {
+    public void update(@NonNull Subject entity) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
@@ -112,7 +93,7 @@ public class DynamoInterpretationRepository implements InterpretationRepository 
      * {@inheritDoc}
      */
     @Override
-    public void save(@NonNull Interpretation entity) {
+    public void save(@NonNull Subject entity) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
@@ -120,7 +101,7 @@ public class DynamoInterpretationRepository implements InterpretationRepository 
      * {@inheritDoc}
      */
     @Override
-    public void delete(@NonNull Interpretation entity) {
+    public void delete(@NonNull Subject entity) {
         throw new UnsupportedOperationException("Not implemented yet");
     }
 
@@ -134,7 +115,10 @@ public class DynamoInterpretationRepository implements InterpretationRepository 
     }
 
     private Table getTable(DynamoDB ddb) {
-        // TODO construct table name using runtime region and stage data
-        return ddb.getTable(TABLE_NAME);
+        return ddb.getTable(resolveTableName());
+    }
+
+    private String resolveTableName() {
+        return String.format("%s-subject", this.ec.getStage().getId());
     }
 }

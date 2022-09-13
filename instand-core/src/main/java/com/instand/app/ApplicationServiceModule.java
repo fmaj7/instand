@@ -1,8 +1,7 @@
 package com.instand.app;
 
 import com.google.inject.AbstractModule;
-import com.instand.domain.repo.mem.InMemoryRepositoryModule;
-import com.instand.domain.repo.prod.ProductionRepositoryModule;
+import com.instand.dataaccess.repo.prod.ProductionRepositoryModule;
 
 public class ApplicationServiceModule extends AbstractModule {
 

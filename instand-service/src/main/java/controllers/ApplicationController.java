@@ -16,14 +16,26 @@
 
 package controllers;
 
+import com.google.common.collect.ImmutableSortedMap;
+import com.google.common.collect.Maps;
+import conf.Constants;
+import ninja.BasicAuthFilter;
+import ninja.FilterWith;
 import ninja.Result;
 import ninja.Results;
 
 import com.google.inject.Singleton;
+import ninja.utils.NinjaConstant;
+import ninja.utils.NinjaProperties;
+
+import javax.inject.Inject;
 
 
 @Singleton
 public class ApplicationController {
+
+    @Inject
+    NinjaProperties ninjaProperties;
 
     public Result index() {
         return Results.html();
@@ -31,6 +43,23 @@ public class ApplicationController {
 
     public Result scaffold() {
         return Results.html();
+    }
+
+    @FilterWith(BasicAuthFilter.class)
+    public Result config() {
+        Result result = Results.html();
+
+        // all ninja properties
+        result.render("ninaProperties", ImmutableSortedMap.copyOf(Maps.fromProperties(ninjaProperties.getAllCurrentNinjaProperties())));
+
+        // only framework active properties
+        result.render("mode", System.getProperties().getProperty(NinjaConstant.MODE_KEY_NAME));
+        result.render("applicationName", ninjaProperties.get(NinjaConstant.applicationName));
+
+        // only our active properties
+        result.render("stage", ninjaProperties.get(Constants.STAGE_KEY_NAME));
+
+        return result;
     }
 
     public Result helloWorldJson() {
